@@ -2,16 +2,29 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema;
 
 const postSchema = new Schema({
+    postId: {
+        type: Schema.Types.ObjectId,
+        required: true
+    },
     date: { 
         type: Date, 
         required: true, 
         default: Date.now 
     },
     content: {
-        //Object? With string and/or picture?
+        text: {
+            type: String,
+            required: false
+        },
+        image: {
+            type: Buffer,
+            required: false
+        },
+        required: true
     },
     comments: {
-        //Type array, not required
+        type: Array,
+        required: false
     }    
 });
 
