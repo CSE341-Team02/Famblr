@@ -18,7 +18,8 @@ const Comment = new Schema({
   lastModification: Date,
   content: {
     type: String,
-    required: true
+    required: true,
+    default: Date.now
   },
   reactions: {
     totalLikes: {
