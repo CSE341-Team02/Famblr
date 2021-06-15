@@ -7,6 +7,27 @@
 
 const User = require('../models/user');
 
+//Get add new user page
+exports.getAddUser = (req, res, next) => {
+  let message = req.flash('error');
+  if (message.length > 0) {
+    message = message[0];
+  } else {
+    message = null;
+  }
+  res.render('auth/signup', {
+    path: '/signup',
+    pageTitle: 'Signup',
+    errorMessage: message,
+    oldInput: {
+      email: '',
+      userName: '',
+      password: ''
+    },
+    validationErrors: []
+  });
+};
+
 //Add a new user
 exports.postAddUser = (req, res, next) => {
   const email = req.body.email;
@@ -31,6 +52,59 @@ exports.postAddUser = (req, res, next) => {
   }
 };
 
+//Get the login page
+exports.getLogin = (req, res, next) => {
+  let message = req.flash('error');
+  if (message.length > 0) {
+    message = message[0];
+  } else {
+    message = null;
+  }
+  res.render('auth/login', {
+    path: '/login',
+    pageTitle: 'Login',
+    errorMessage: message,
+    oldInput: {
+      email: '',
+      password: ''
+    },
+    validationErrors: []
+  });
+};
+
+//Login the user
+exports.postLogin = (req, res, next) => {
+  const email = req.body.email;
+  const password = req.body.password;
+
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(422).render('auth/login', {
+      path: '/login',
+      pageTitle: 'Login',
+      errorMessage: errors.array()[0].msg,
+      oldInput: {
+        email: email,
+        password: password
+      },
+      validationErrors: errors.array()
+    });
+  }
+};
+
+//Logout the user
+exports.postLogout = (req, res, next) => {
+  req.session.destroy(err => {
+    console.log(err);
+    res.redirect('/');
+  });
+};
+
+
+//Edit User
+//Delete User
+//Show all users??
+
 // const transporter = nodemailer.createTransport(
 //   sendgridTransport({
 //     auth: {
@@ -40,61 +114,8 @@ exports.postAddUser = (req, res, next) => {
 //   })
 // );
 
-// exports.getLogin = (req, res, next) => {
-//   let message = req.flash('error');
-//   if (message.length > 0) {
-//     message = message[0];
-//   } else {
-//     message = null;
-//   }
-//   res.render('auth/login', {
-//     path: '/login',
-//     pageTitle: 'Login',
-//     errorMessage: message,
-//     oldInput: {
-//       email: '',
-//       password: ''
-//     },
-//     validationErrors: []
-//   });
-// };
 
-// exports.getSignup = (req, res, next) => {
-//   let message = req.flash('error');
-//   if (message.length > 0) {
-//     message = message[0];
-//   } else {
-//     message = null;
-//   }
-//   res.render('auth/signup', {
-//     path: '/signup',
-//     pageTitle: 'Signup',
-//     errorMessage: message,
-//     oldInput: {
-//       email: '',
-//       password: ''
-//     },
-//     validationErrors: []
-//   });
-// };
 
-// exports.postLogin = (req, res, next) => {
-//   const email = req.body.email;
-//   const password = req.body.password;
-
-//   const errors = validationResult(req);
-//   if (!errors.isEmpty()) {
-//     return res.status(422).render('auth/login', {
-//       path: '/login',
-//       pageTitle: 'Login',
-//       errorMessage: errors.array()[0].msg,
-//       oldInput: {
-//         email: email,
-//         password: password
-//       },
-//       validationErrors: errors.array()
-//     });
-//   }
 
 //   User.findOne({ email: email })
 //     .then(user => {
@@ -165,12 +186,6 @@ exports.postAddUser = (req, res, next) => {
 //     });
 // };
 
-// exports.postLogout = (req, res, next) => {
-//   req.session.destroy(err => {
-//     console.log(err);
-//     res.redirect('/');
-//   });
-// };
 
 // exports.getReset = (req, res, next) => {
 //   let message = req.flash('error');
