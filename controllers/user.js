@@ -74,7 +74,7 @@ exports.getLogin = (req, res, next) => {
 
 //Login the user
 exports.postLogin = (req, res, next) => {
-  const email = req.body.email;
+  const userName = req.body.userName;
   const password = req.body.password;
 
   const errors = validationResult(req);
@@ -84,7 +84,7 @@ exports.postLogin = (req, res, next) => {
       pageTitle: 'Login',
       errorMessage: errors.array()[0].msg,
       oldInput: {
-        email: email,
+        userName: userName,
         password: password
       },
       validationErrors: errors.array()
