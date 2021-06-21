@@ -1,9 +1,9 @@
 // const crypto = require('crypto');
 
-// const bcrypt = require('bcryptjs'); 
+const bcrypt = require('bcryptjs'); 
 // const nodemailer = require('nodemailer');
 // const sendgridTransport = require('nodemailer-sendgrid-transport');
-// const { validationResult } = require('express-validator/check');
+const { validationResult } = require('express-validator/check');
 
 const User = require('../models/user');
 
@@ -15,41 +15,64 @@ exports.getAddUser = (req, res, next) => {
   } else {
     message = null;
   }
+
   res.render('auth/signup', {
     path: '/signup',
     pageTitle: 'Signup',
     errorMessage: message,
     oldInput: {
       email: '',
-      userName: '',
-      password: ''
+      username: '',
     },
     validationErrors: []
   });
+  
+
+  
 };
 
 //Add a new user
 exports.postAddUser = (req, res, next) => {
   const email = req.body.email;
-  const userName = req.body.userName;
+  const username = req.body.username;
   const password = req.body.password;
   
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    console.log(errors.array());
+    console.log(errors.array(), "erorr array");
     return res.status(422).render('auth/signup', {
       path: '/signup',
       pageTitle: 'Signup',
       errorMessage: errors.array()[0].msg,
       oldInput: {
         email: email,
-        userName: userName,
-        password: password,
-        confirmPassword: req.body.confirmPassword
+        username: username,
       },
       validationErrors: errors.array()
     });
   }
+
+  // Adding the user to the data base
+  (async function () {
+    try {
+      const hashedPassword = await bcrypt.hash(password, 12);
+      const user = new User({
+        email: email,
+        username: username,
+        password: hashedPassword
+      });
+
+      await user.save();
+
+      console.log("The user was successfully registered");
+
+      res.redirect("/");
+    } catch(error) {
+      console.log(error);
+    }
+    
+  })()
+
 };
 
 //Get the login page
@@ -74,26 +97,80 @@ exports.getLogin = (req, res, next) => {
 
 //Login the user
 exports.postLogin = (req, res, next) => {
-  const userName = req.body.userName;
+  const email = req.body.email;
   const password = req.body.password;
 
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
+    console.log(errors.array()[0].msg);
     return res.status(422).render('auth/login', {
       path: '/login',
       pageTitle: 'Login',
       errorMessage: errors.array()[0].msg,
       oldInput: {
-        userName: userName,
-        password: password
+        email: email,
       },
       validationErrors: errors.array()
     });
   }
+
+  User.findOne({email: email})
+  .then( user => {
+    console.log(user, "finding the user");
+    console.log(user.password);
+    if(!user) {
+        
+      return res.status(422).render('auth/login', {
+        path: '/login',
+        pageTitle: 'Login',
+        errorMessage: "Invalid email or password",
+        oldInput: {
+          email: email,
+          password: password
+        },
+        validationErrors: errors.array()
+      });
+    }
+
+
+    bcrypt.compare(password, user.password)
+    .then( doMatch => {
+      if(doMatch) {
+        console.log("they do match");
+
+        req.session.isLoggedIn = true;
+        req.session.user = user;
+        return req.session.save( error => {
+          console.log(req.session, "the session information");
+          console.log(error, "error session");
+          res.redirect("/");
+        });
+        
+      } else {
+        console.log("they do not match");
+        return res.status(422).render('auth/login', {
+          path: '/login',
+          pageTitle: 'Login',
+          errorMessage: 'Invalid email or password.',
+          oldInput: {
+            email: email,
+            password: password
+          },
+          validationErrors: []
+        });
+      }
+    })
+    .catch(error => {
+      console.log(error);
+      res.redirect("/login");
+    })
+  })
+
+
 };
 
 //Logout the user
-exports.postLogout = (req, res, next) => {
+exports.logOut = (req, res, next) => {
   req.session.destroy(err => {
     console.log(err);
     res.redirect('/');
