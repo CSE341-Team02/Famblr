@@ -1,0 +1,37 @@
+<!------------------------------------------------------------------------------
+  login.ejs
+------------------------------------------------------------------------------->
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Famblr</title>
+    <link rel="shortcut icon" type="image/jpg" href="Favicon.ico"/>
+</head>
+<body>
+    <h1>Famblr</h1> 
+    <form action="postLogin" method="POST">
+        <div class="container">
+          <label for="email"><b>Email</b></label>
+          <input type="text" 
+            class="<%= validationErrors.find(e => e.param === 'email') ? 'invalid' : '' %>"
+            placeholder="Enter Email" 
+            name="email" 
+            value="<%= oldInput.email %>"
+            required
+          >
+          <br>
+          <label for="password"><b>Password</b></label>
+          <input type="password" 
+            class="<%= validationErrors.find(e => e.param === 'password') ? 'invalid' : '' %>"
+            placeholder="Enter Password" 
+            name="password" 
+            required
+          >
+          <br>
+          <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+          <button type="submit">Log in</button>
+        </div>
+      </form> 
+</body>
