@@ -5,26 +5,20 @@
 <html lang="en-US">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Famblr</title>
-  <link rel="shortcut icon" type="image/jpg" href="favicon.ico" />
-  <!-- Latest compiled and minified CSS -->
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
-    integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
-
-  <!-- Optional theme -->
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css"
-    integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
-
-  <!-- Latest compiled and minified JavaScript -->
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"
-    integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS"
-    crossorigin="anonymous"></script>
+  <%- include ('partials/head.ejs') %>
 </head>
 
-<body>
-  <h1>Famblr</h1>
-  <button type="button">Register</button>
-  <button type="button">Log In</button>
+<body style="min-height: 100vh; background: linear-gradient(  160deg  , #4f75de, #292a52); display: flex;">
+  <div class="container" style="align-self: center; justify-self: center;">
+
+    <div class="jumbotron">
+      <h1>Famblr</h1>
+      <p class="lead">Stay connected with your family.</p>
+      <p>
+        <a class="btn btn-lg btn-primary" href="/login" role="button">Login</a>
+        <a class="btn btn-lg btn-default" href="/signup" role="button">Sign Up</a>
+      </p>
+    </div>
+
+  </div>
 </body>
