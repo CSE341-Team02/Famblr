@@ -5,10 +5,10 @@ const {check, body} = require("express-validator/check");
 const { Promise } = require('mongoose');
 const User = require("../models/user");
 
-router.use((req, res, next) => {
-  res.locals.csrfToken = req.csrfToken();
-  next(); 
-})
+// router.use((req, res, next) => {
+//   res.locals.csrfToken = req.csrfToken();
+//   next(); 
+// })
 
 //GET Signup Page
 router.get("/signup", userController.getAddUser);

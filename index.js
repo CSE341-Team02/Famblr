@@ -5,9 +5,9 @@ const path = require('path');
 const mongoose = require('mongoose');
 const session = require('express-session');
 const MongoDBStore = require('connect-mongodb-session')(session);
-const csrf = require('csurf');
+// const csrf = require('csurf');
 const flash = require('connect-flash');
-const routes = require('./routes')
+
 
 
 require("dotenv").config({ path: __dirname + "/.env" });
@@ -18,11 +18,15 @@ const store = new MongoDBStore({
   uri: process.env.MONGODB_URI,
   collection: 'sessions'
 });
-const csrfProtection = csrf();
+// const csrfProtection = csrf();
 
 app.use(express.static(path.join(__dirname, "public")));
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
+
+const routes = require('./routes')
+const postRoutes = require('./routes/feed.js');
+
 app.use(bodyParser({ extended: false })); // For parsing the body of a POST
 app.use(
   session({
@@ -32,10 +36,17 @@ app.use(
     store: store
   })
 )
-app.use(csrfProtection)
+// app.use(csrfProtection)
 app.use(flash())
 
+// app.use((req, res, next) => {
+//   res.locals.isAuthenticated = req.session.isLoggedIn;
+//   res.locals.csrfToken = req.csrfToken();
+//   next();
+// });
+
 app.use("/", routes);
+app.use(postRoutes);
 
 const options = {
   useUnifiedTopology: true,

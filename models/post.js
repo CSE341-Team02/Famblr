@@ -11,17 +11,19 @@ const postSchema = new Schema({
         required: true, 
         default: Date.now 
     },
-    content: {
-        text: {
-            type: String,
-            required: false
-        },
-        image: {
-            type: Buffer,
-            required: false
-        },
-        required: true
-    },
+    content: [
+        {
+            text: {
+                type: String,
+                required: false
+            },
+            image: {
+                type: Buffer,
+                required: false
+            },
+            // required: true
+        }
+    ],
     comments: {
         type: Array,
         required: false

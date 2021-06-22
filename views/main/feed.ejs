@@ -21,5 +21,17 @@
         </ul>
 
     </body>
-    <script src="feed.js"></script>
+    <script>
+        document.getElementById("createPost").addEventListener('click', () => {
+            fetch('http://localhost:5000/feed/post', {
+                method: 'POST',
+                body: JSON.stringify({
+                    contentText: document.getElementById('contentText').value
+                }),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+        })
+    </script>
 </html>
