@@ -13,7 +13,7 @@
 <body class="text-center">
   <main class="form-signin">
     <form action="postLogin" method="POST">
-      <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+      <!-- Add csrf token here if needed -->
       <h1 class="famblr-logo">Famblr</h1>
       <h2 class="h3 mb-3 fw-normal text-muted">Please sign in</h1>
 
@@ -67,7 +67,7 @@
             required
           >
           <br>
-          <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+          
           <button type="submit">Log in</button>
         </div>
       </form> 

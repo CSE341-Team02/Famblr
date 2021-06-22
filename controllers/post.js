@@ -4,13 +4,12 @@ const Post = require('../models/post');
 
 exports.createPost = (req, res, next) => {
 
-    console.log("Post creation attempt");
-
     const contentText = req.body.contentText;
     // const contentImage = req.body.contentImage;
 
     const post = new Post({
-        contentText: contentText 
+        text: contentText,
+        // userId: req.user -- Fix this so the system can access the userID
         // ,contentImage: contentImage
     });
 
