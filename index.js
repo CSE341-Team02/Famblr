@@ -1,14 +1,15 @@
+const path = require('path');
+
 const express = require('express');
 const bodyParser = require('body-parser');
-const cors = require('cors')
-const path = require('path');
 const mongoose = require('mongoose');
+// const cors = require('cors')
 const session = require('express-session');
 const MongoDBStore = require('connect-mongodb-session')(session);
 // const csrf = require('csurf');
 const flash = require('connect-flash');
 
-
+const User = require('./models/user');
 
 require("dotenv").config({ path: __dirname + "/.env" });
 const PORT = process.env.PORT || 5000;
@@ -28,6 +29,7 @@ const routes = require('./routes')
 const postRoutes = require('./routes/feed.js');
 
 app.use(bodyParser({ extended: false })); // For parsing the body of a POST
+
 app.use(
   session({
     secret: process.env.SESSION_SECRET,
@@ -36,14 +38,33 @@ app.use(
     store: store
   })
 )
+
 // app.use(csrfProtection)
 app.use(flash())
 
-// app.use((req, res, next) => {
-//   res.locals.isAuthenticated = req.session.isLoggedIn;
-//   res.locals.csrfToken = req.csrfToken();
-//   next();
-// });
+app.use((req, res, next) => {
+  res.locals.isAuthenticated = req.session.isLoggedIn;
+  // res.locals.csrfToken = req.csrfToken();
+  next();
+});
+
+app.use((req, res, next) => {
+  console.log('User ID: ' + req.session.user);
+  if (!req.session.user) {
+      return next();
+  }
+  User.findById(req.session.user._id)
+      .then(user => {
+          if (!user){
+              return next();
+          }
+          req.user = user;
+          next();
+      })
+      .catch(err => {
+          next(new Error(err));
+      });
+});
 
 app.use("/", routes);
 app.use(postRoutes);
