@@ -26,9 +26,7 @@ exports.getAddUser = (req, res, next) => {
     },
     validationErrors: []
   });
-  
-
-  
+    
 };
 
 //Add a new user
@@ -173,7 +171,7 @@ exports.postLogin = (req, res, next) => {
 exports.logOut = (req, res, next) => {
   req.session.destroy(err => {
     console.log(err);
-    res.redirect('/');
+    res.redirect('/login');
   });
 };
 

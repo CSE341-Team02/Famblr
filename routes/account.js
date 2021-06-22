@@ -25,20 +25,29 @@ router.get("/login", userController.getLogin);
 router.get("/logout", userController.logOut);
 
 router.post("/postSignup"
-, [ check("email")
-    .isEmail()
-    .withMessage("Please enter a valid email")
+, [ check("username")
+    .isAlphanumeric().withMessage("Usermane must contain only letters or numbers")
     .custom((value , {req}) => {
-      return User.findOne({email:req.body.email})
+      return User.findOne({username:req.body.username})
         .then( userDoc => {
           if(userDoc) {
-            console.log("email exists");
-            return Promise.reject("E-mail already exists. Please pick a different e-mail");            
+            return Promise.reject("Username Already Exists");            
           } 
-          console.log("what is hghappeind");
           return true;
         });
     })
+    ,  check("email")
+        .isEmail()
+        .withMessage("Please enter a valid email")
+        .custom((value , {req}) => {
+          return User.findOne({email:req.body.email})
+            .then( userDoc => {
+              if(userDoc) {
+                return Promise.reject("E-mail already exists. Please pick a different e-mail");            
+              } 
+              return true;
+            });
+        })
     , body("password", "Please enter a passwords with only numbers and text and at least 5 characters.")
       .isLength({min: 6})
       .isAlphanumeric()

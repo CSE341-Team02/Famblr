@@ -1,5 +1,22 @@
+html, body {
+    height: 100%;
+    min-height: 100vh;
+}
+
 .famblr-logo {
-    background: -webkit-linear-gradient( 45deg, #09009f, #00ff95 80%);
+    background: rgb(9, 0, 159);
+    background: -moz-linear-gradient(45deg, rgba(9, 0, 159, 1) 0%, rgba(0, 255, 149, 1) 100%);
+    background: -webkit-linear-gradient(45deg, rgba(9, 0, 159, 1) 0%, rgba(0, 255, 149, 1) 100%);
+    background: linear-gradient(45deg, rgba(9, 0, 159, 1) 0%, rgba(0, 255, 149, 1) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#09009f", endColorstr="#00ff95", GradientType=1);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+}
+
+.famblr-background {
+    background: rgb(9, 0, 159);
+    background: -moz-linear-gradient(45deg, rgba(9, 0, 159, 1) 0%, rgba(0, 255, 149, 1) 100%);
+    background: -webkit-linear-gradient(45deg, rgba(9, 0, 159, 1) 0%, rgba(0, 255, 149, 1) 100%);
+    background: linear-gradient(45deg, rgba(9, 0, 159, 1) 0%, rgba(0, 255, 149, 1) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#09009f", endColorstr="#00ff95", GradientType=1);
 }

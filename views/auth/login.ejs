@@ -19,21 +19,55 @@
 
         <div class="form-floating">
           <input type="email" name="email" value="<%= oldInput.email %>"
-            class="form-control <%= validationErrors.find(e => e.param === 'email') ? 'is-invalid' : '' %>"
+            class="form-control xis-invalid <%= validationErrors.find(e => e.param === 'email') ? 'is-invalid' : '' %>"
             id="floatingInput" placeholder="name@example.com" required>
           <label for="floatingInput">Email address</label>
+          <div id="validationServer04Feedback" class="invalid-feedback mb-2">
+            Email Error
+          </div>
         </div>
         <div class="form-floating">
           <input type="password" name="password"
-            class="form-control <%= validationErrors.find(e => e.param === 'password') ? 'is-invalid' : '' %>"
+            class="form-control is-invalid<%= validationErrors.find(e => e.param === 'password') ? 'is-invalid' : '' %>"
             id="floatingPassword" placeholder="Password" required>
           <label for="floatingPassword">Password</label>
+          <div id="validationServer04Feedback" class="invalid-feedback mb-1">
+            <%= validationErrors.find(e => e.param === 'password') %>
+            Passoword Error
+          </div>
         </div>
 
-        <button class="w-100 btn btn-lg btn-primary" type="submit">Sign in</button>
+        <button class="mt-3 w-100 btn btn-lg btn-primary" type="submit">Sign in</button>
 
         <p class="mt-3">Dont have an account? <a href="/account/signup">Sign Up</a></p>
         <p class="mt-5 mb-3 text-muted">© 2021</p>
     </form>
   </main>
 </body>
+
+<!-- <body>
+    <h1>Famblr</h1> 
+    <form action="postLogin" method="POST">
+        <div class="container">
+          <label for="email"><b>Email</b></label>
+          <input type="text" 
+            class="<%= validationErrors.find(e => e.param === 'email') ? 'invalid' : '' %>"
+            placeholder="Enter Email" 
+            name="email" 
+            value="<%= oldInput.email %>"
+            required
+          >
+          <br>
+          <label for="password"><b>Password</b></label>
+          <input type="password" 
+            class="<%= validationErrors.find(e => e.param === 'password') ? 'invalid' : '' %>"
+            placeholder="Enter Password" 
+            name="password" 
+            required
+          >
+          <br>
+          <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+          <button type="submit">Log in</button>
+        </div>
+      </form> 
+</body> -->

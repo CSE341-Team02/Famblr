@@ -22,6 +22,11 @@
             class="form-control <%= validationErrors.find(e => e.param === 'username') ? 'is-invalid' : '' %>"
             placeholder="Username" required>
           <label for="floatingInput">Username</label>
+          <% if(validationErrors.find(e=> e.param === 'username')) { %>
+            <div id="validationServer04Feedback" class="invalid-feedback mb-2">
+              <%= validationErrors.find(e=> e.param === 'username').msg %>
+            </div>
+            <% } %>
         </div>
 
         <div class="form-floating">
@@ -29,6 +34,12 @@
             class="form-control <%= validationErrors.find(e => e.param === 'email') ? 'is-invalid' : '' %>"
             placeholder="name@example.com" required>
           <label for="floatingInput">Email address</label>
+
+          <% if(validationErrors.find(e=> e.param === 'email')) { %>
+            <div id="validationServer04Feedback" class="invalid-feedback mb-2">
+              <%= validationErrors.find(e=> e.param === 'email').msg %>
+            </div>
+            <% } %>
         </div>
 
         <div class="form-floating">
@@ -36,6 +47,11 @@
             class="form-control <%= validationErrors.find(e => e.param === 'password') ? 'is-invalid' : '' %>"
             placeholder="Password" required>
           <label for="floatingPassword">Password</label>
+          <% if(validationErrors.find(e=> e.param === 'password')) { %>
+            <div id="validationServer04Feedback" class="invalid-feedback mb-2">
+              <%= validationErrors.find(e=> e.param === 'password').msg %>
+            </div>
+            <% } %>
         </div>
 
         <div class="form-floating">
@@ -43,6 +59,11 @@
             class="form-control <%= validationErrors.find(e => e.param === 'confirmPassword') ? 'is-invalid' : '' %>"
             placeholder="Confirm Password" required>
           <label for="floatingPassword">Confirm Password</label>
+          <% if(validationErrors.find(e=> e.param === 'confirmPassword')) { %>
+            <div id="validationServer04Feedback" class="invalid-feedback mb-2">
+              <%= validationErrors.find(e=> e.param === 'confirmPassword').msg %>
+            </div>
+            <% } %>
         </div>
 
         <button class="w-100 btn btn-lg btn-primary" type="submit">Sign in</button>
