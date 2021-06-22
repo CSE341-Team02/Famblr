@@ -21,14 +21,21 @@ const store = new MongoDBStore({
 });
 // const csrfProtection = csrf();
 
+//Imports public folder
 app.use(express.static(path.join(__dirname, "public")));
+
+//Imports views folder
 app.set("views", path.join(__dirname, "views"));
+
+//Sets the view engine to ejs
 app.set("view engine", "ejs");
 
+//Assigns routes to variables
 const routes = require('./routes')
 const postRoutes = require('./routes/feed.js');
 
-app.use(bodyParser({ extended: false })); // For parsing the body of a POST
+// For parsing the body of a POST
+app.use(bodyParser({ extended: false })); 
 
 app.use(
   session({
@@ -48,8 +55,8 @@ app.use((req, res, next) => {
   next();
 });
 
+//Middleware that assigns the logged in user to the req.user variable to use throughout the app
 app.use((req, res, next) => {
-  console.log('User ID: ' + req.session.user);
   if (!req.session.user) {
       return next();
   }
@@ -66,6 +73,7 @@ app.use((req, res, next) => {
       });
 });
 
+//Route middlewares
 app.use("/", routes);
 app.use(postRoutes);
 
@@ -77,6 +85,7 @@ const options = {
   family: 4,
 };
 
+//Connect to database and start app
 mongoose
   .connect(process.env.MONGODB_URI, options)
   .then((result) => {

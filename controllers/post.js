@@ -9,7 +9,7 @@ exports.createPost = (req, res, next) => {
 
     const post = new Post({
         text: contentText,
-        // userId: req.user -- Fix this so the system can access the userID
+        userId: req.user
         // ,contentImage: contentImage
     });
 
