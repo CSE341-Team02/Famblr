@@ -93,7 +93,7 @@ exports.getLogin = (req, res, next) => {
   });
 };
 
-//Login the user
+//POST Login the user
 exports.postLogin = (req, res, next) => {
   const email = req.body.email;
   const password = req.body.password;
@@ -141,7 +141,15 @@ exports.postLogin = (req, res, next) => {
         return req.session.save( error => {
           console.log(req.session, "the session information");
           console.log(error, "error session");
-          res.redirect("/");
+          res.render('main/feed', {
+            path: '/feed',
+            // errorMessage: message,
+            // oldInput: {
+            //   email: '',
+            //   password: ''
+            // },
+            validationErrors: []
+          }); //Change this to the user's index page
         });
         
       } else {
