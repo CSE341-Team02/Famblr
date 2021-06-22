@@ -18,22 +18,23 @@
       <h2 class="h3 mb-3 fw-normal text-muted">Please sign in</h1>
 
         <div class="form-floating">
+          <div id="validationServer04Feedback" class="invalid-feedback mb-2">
+            Invalid Email or Password
+          </div>
           <input type="email" name="email" value="<%= oldInput.email %>"
-            class="form-control xis-invalid <%= validationErrors.find(e => e.param === 'email') ? 'is-invalid' : '' %>"
+            class="form-control <%= errorMessage ? 'is-invalid' : '' %>"
             id="floatingInput" placeholder="name@example.com" required>
           <label for="floatingInput">Email address</label>
-          <div id="validationServer04Feedback" class="invalid-feedback mb-2">
-            Email Error
-          </div>
         </div>
+
         <div class="form-floating">
           <input type="password" name="password"
-            class="form-control is-invalid<%= validationErrors.find(e => e.param === 'password') ? 'is-invalid' : '' %>"
+            class="form-control <%= errorMessage ? 'is-invalid' : '' %>"
             id="floatingPassword" placeholder="Password" required>
           <label for="floatingPassword">Password</label>
-          <div id="validationServer04Feedback" class="invalid-feedback mb-1">
-            <%= validationErrors.find(e => e.param === 'password') %>
-            Passoword Error
+           
+          <div id="validationServer04Feedback" class="invalid-feedback mb-2">
+            <%= errorMessage %>
           </div>
         </div>
 
