@@ -1,0 +1,53 @@
+<div class="col-sm-12">
+    <div id="post-modal-data" class="iq-card iq-card-block iq-card-stretch iq-card-height">
+        <div class="iq-card-header d-flex justify-content-between">
+            <div class="iq-header-title">
+                <h4 class="card-title">Create Post</h4>
+            </div>
+        </div>
+        <div class="iq-card-body">
+            <!-- <form action="#"> -->
+            <div class="d-flex align-items-center">
+                <div class="user-img">
+                    <img src="https://randomuser.me/api/portraits/lego/1.jpg" alt="userimg"
+                        class="avatar-60 rounded-circle">
+                </div>
+                <div class="post-text ml-3 w-100">
+                    <textarea type="text" class="form-control rounded" placeholder="Write something here..." rows="2"
+                        style="border:none; line-height: 1.25; min-height: 3em;" name="contentText" id="contentText"
+                        required></textarea>
+                </div>
+            </div>
+            <hr>
+            <ul class="post-opt-block d-flex align-items-center list-inline justify-content-between m-0 p-0">
+                <a href="#">
+                    <li class="iq-bg-primary rounded p-2 pointer mr-3">
+                        <img src="images/small/07.png" alt="icon" class="img-fluid">&nbsp;Add Photo
+                    </li>
+                </a>
+                <li>
+                    <button type="submit" id="createPost" class="btn btn-primary d-block">Post</button>
+                </li>
+            </ul>
+            <!-- </form> -->
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById("createPost").addEventListener('click', () => {
+        fetch('/feed/post', {
+            method: 'POST',
+            body: JSON.stringify({
+                contentText: document.getElementById('contentText').value
+            }),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }).then(response => {
+            console.log("Post Created Successfully!")
+            console.log(response)
+            document.getElementById('contentText').value = null;
+        })
+    })
+</script>

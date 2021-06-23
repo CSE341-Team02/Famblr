@@ -3,6 +3,5 @@ module.exports = (req, res, next) => {
     console.log("This Route Requires Being Logged In");
     return res.redirect("/login");
   }
-  console.log("[requriesLogin Middleware] Current User: ", req.session.user.username)
   next();
 };
