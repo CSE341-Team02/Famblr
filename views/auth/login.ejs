@@ -44,31 +44,7 @@
         <p class="mt-5 mb-3 text-muted">© 2021</p>
     </form>
   </main>
-</body>
 
-<!-- <body>
-    <h1>Famblr</h1> 
-    <form action="postLogin" method="POST">
-        <div class="container">
-          <label for="email"><b>Email</b></label>
-          <input type="text" 
-            class="<%= validationErrors.find(e => e.param === 'email') ? 'invalid' : '' %>"
-            placeholder="Enter Email" 
-            name="email" 
-            value="<%= oldInput.email %>"
-            required
-          >
-          <br>
-          <label for="password"><b>Password</b></label>
-          <input type="password" 
-            class="<%= validationErrors.find(e => e.param === 'password') ? 'invalid' : '' %>"
-            placeholder="Enter Password" 
-            name="password" 
-            required
-          >
-          <br>
-          
-          <button type="submit">Log in</button>
-        </div>
-      </form> 
-</body> -->
+  <%- include ('../partials/js-imports.ejs') %>
+</body>
+</html>
