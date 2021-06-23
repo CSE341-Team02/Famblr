@@ -1,15 +1,15 @@
-const path = require('path');
+const path = require("path");
 
-const express = require('express');
-const bodyParser = require('body-parser');
-const mongoose = require('mongoose');
+const express = require("express");
+const bodyParser = require("body-parser");
+const mongoose = require("mongoose");
 // const cors = require('cors')
-const session = require('express-session');
-const MongoDBStore = require('connect-mongodb-session')(session);
+const session = require("express-session");
+const MongoDBStore = require("connect-mongodb-session")(session);
 // const csrf = require('csurf');
-const flash = require('connect-flash');
+const flash = require("connect-flash");
 
-const User = require('./models/user');
+const User = require("./models/user");
 
 require("dotenv").config({ path: __dirname + "/.env" });
 const PORT = process.env.PORT || 5000;
@@ -17,7 +17,7 @@ const PORT = process.env.PORT || 5000;
 const app = express();
 const store = new MongoDBStore({
   uri: process.env.MONGODB_URI,
-  collection: 'sessions'
+  collection: "sessions",
 });
 // const csrfProtection = csrf();
 
@@ -31,26 +31,27 @@ app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
 
 //Assigns routes to variables
-const routes = require('./routes')
-const postRoutes = require('./routes/feed.js');
+const routes = require("./routes");
+const postRoutes = require("./routes/feed.js");
 
 // For parsing the body of a POST
-app.use(bodyParser({ extended: false })); 
+app.use(bodyParser({ extended: false }));
 
 app.use(
   session({
     secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
-    store: store
+    store: store,
   })
-)
+);
 
 // app.use(csrfProtection)
-app.use(flash())
+app.use(flash());
 
 app.use((req, res, next) => {
   res.locals.isAuthenticated = req.session.isLoggedIn;
+  res.locals.user = req.session.user;
   // res.locals.csrfToken = req.csrfToken();
   next();
 });
@@ -58,19 +59,19 @@ app.use((req, res, next) => {
 //Middleware that assigns the logged in user to the req.user variable to use throughout the app
 app.use((req, res, next) => {
   if (!req.session.user) {
-      return next();
+    return next();
   }
   User.findById(req.session.user._id)
-      .then(user => {
-          if (!user){
-              return next();
-          }
-          req.user = user;
-          next();
-      })
-      .catch(err => {
-          next(new Error(err));
-      });
+    .then((user) => {
+      if (!user) {
+        return next();
+      }
+      req.user = user;
+      next();
+    })
+    .catch((err) => {
+      next(new Error(err));
+    });
 });
 
 //Route middlewares
