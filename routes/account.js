@@ -1,16 +1,14 @@
 const router = require("express").Router();
 const userController = require("../controllers/user");
 
-// Account Details
+// GET Account Details
 router.get("/", userController.getCurrentUser);
 
-router.post("/update-account", (req, res, next) => {
-  res.send(`${req.method} ${req.originalUrl}`); // placeholder route
-});
+// POST Updated User Details
+// router.post("/update-account", userController.???);
 
-router.post("/delete-account", (req, res, next) => {
-  res.send(`${req.method} ${req.originalUrl}`); // placeholder route
-});
+// POST Delete Account
+// router.post("/delete-account", userController.???);
 
 router.get("/test", (req, res, next) => {
   console.log(req.session.user);

@@ -31,7 +31,7 @@ router.get("/signup", authController.getSignUp);
 
 // POST Sign Up Form Data
 router.post(
-  "/postSignup",
+  "/signup",
   [
     check("username")
       .isAlphanumeric()

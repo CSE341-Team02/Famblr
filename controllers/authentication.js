@@ -136,6 +136,8 @@ exports.getSignUp = (req, res, next) => {
     pageTitle: "Signup",
     errorMessage: message,
     oldInput: {
+      firstName: "",
+      lastName: "",
       email: "",
       username: "",
     },
@@ -145,8 +147,10 @@ exports.getSignUp = (req, res, next) => {
 
 // Process Sign Up Data (Add new user)
 exports.postSignUp = (req, res, next) => {
-  const email = req.body.email;
+  const firstName = req.body.firstName;
+  const lastName = req.body.lastName;
   const username = req.body.username;
+  const email = req.body.email;
   const password = req.body.password;
 
   const errors = validationResult(req);
@@ -157,8 +161,11 @@ exports.postSignUp = (req, res, next) => {
       pageTitle: "Signup",
       errorMessage: errors.array()[0].msg,
       oldInput: {
-        email: email,
+        firstName: firstName,
+        lastName: lastName,
         username: username,
+        username: username,
+        email: email,
       },
       validationErrors: errors.array(),
     });
@@ -169,8 +176,10 @@ exports.postSignUp = (req, res, next) => {
     try {
       const hashedPassword = await bcrypt.hash(password, 12);
       const user = new User({
-        email: email,
+        firstName: firstName,
+        lastName: lastName,
         username: username,
+        email: email,
         password: hashedPassword,
       });
 
