@@ -10,63 +10,85 @@
     </link>
 </head>
 
-<body class="text-center">
+<body>
   <main class="form-signin">
     <form action="postSignup" method="POST">
-      <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-      <h1 class="famblr-logo">Famblr</h1>
+      <!-- Add csrf token here if needed -->
+      <h1> <span class="famblr-logo">Famblr</span></h1>
       <h2 class="h3 mb-3 fw-normal text-muted">Sign Up</h1>
 
-        <div class="form-floating">
-          <input type="text" name="username" value="<%= oldInput.username %>"
-            class="form-control <%= validationErrors.find(e => e.param === 'username') ? 'is-invalid' : '' %>"
-            placeholder="Username" required>
-          <label for="floatingInput">Username</label>
-          <% if(validationErrors.find(e=> e.param === 'username')) { %>
-            <div id="validationServer04Feedback" class="invalid-feedback mb-2">
-              <%= validationErrors.find(e=> e.param === 'username').msg %>
-            </div>
-            <% } %>
+        <div class="row mb-2">
+          <div class="col">
+            <label for="firstName">First Name</label>
+            <input type="text" name="firstName" id="firstName" class="form-control" placeholder="First name" required>
+          </div>
+          <div class="col">
+            <label for="lastName">Last Name</label>
+            <input type="text" name="lastName" id="lastName" class="form-control" placeholder="Last name" required>
+          </div>
         </div>
 
-        <div class="form-floating">
-          <input type="email" name="email" value="<%= oldInput.email %>"
-            class="form-control <%= validationErrors.find(e => e.param === 'email') ? 'is-invalid' : '' %>"
-            placeholder="name@example.com" required>
-          <label for="floatingInput">Email address</label>
+        <div class="row mb-2">
+          <div class="col">
+            <label for="username">Username</label>
+            <input type="text" name="username" id="username" placeholder="Username" value="<%= oldInput.username %>"
+              class="form-control <%= validationErrors.find(e => e.param === 'username') ? 'is-invalid' : '' %>"
+              required>
 
-          <% if(validationErrors.find(e=> e.param === 'email')) { %>
-            <div id="validationServer04Feedback" class="invalid-feedback mb-2">
-              <%= validationErrors.find(e=> e.param === 'email').msg %>
-            </div>
-            <% } %>
+            <% if(validationErrors.find(e=> e.param === 'username')) { %>
+              <div class="invalid-feedback">
+                <%= validationErrors.find(e=> e.param === 'username').msg %>
+              </div>
+              <% } %>
+          </div>
         </div>
 
-        <div class="form-floating">
-          <input type="password" name="password"
-            class="form-control <%= validationErrors.find(e => e.param === 'password') ? 'is-invalid' : '' %>"
-            placeholder="Password" required>
-          <label for="floatingPassword">Password</label>
-          <% if(validationErrors.find(e=> e.param === 'password')) { %>
-            <div id="validationServer04Feedback" class="invalid-feedback mb-2">
-              <%= validationErrors.find(e=> e.param === 'password').msg %>
-            </div>
-            <% } %>
+        <div class="row mb-2">
+          <div class="col">
+            <label for="email">Email</label>
+            <input type="email" name="email" id="email" placeholder="name@example.com" value="<%= oldInput.email %>"
+              class="form-control <%= validationErrors.find(e => e.param === 'email') ? 'is-invalid' : '' %>" required>
+
+            <% if(validationErrors.find(e=> e.param === 'email')) { %>
+              <div class="invalid-feedback">
+                <%= validationErrors.find(e=> e.param === 'email').msg %>
+              </div>
+              <% } %>
+          </div>
         </div>
 
-        <div class="form-floating">
-          <input type="password" name="confirmPassword"
-            class="form-control <%= validationErrors.find(e => e.param === 'confirmPassword') ? 'is-invalid' : '' %>"
-            placeholder="Confirm Password" required>
-          <label for="floatingPassword">Confirm Password</label>
-          <% if(validationErrors.find(e=> e.param === 'confirmPassword')) { %>
-            <div id="validationServer04Feedback" class="invalid-feedback mb-2">
-              <%= validationErrors.find(e=> e.param === 'confirmPassword').msg %>
-            </div>
-            <% } %>
+        <div class="row mb-2">
+          <div class="col">
+            <label for="email">Password</label>
+            <input type="password" name="password" id="password" placeholder="Password" value="<%= oldInput.password %>"
+              class="form-control <%= validationErrors.find(e => e.param === 'password') ? 'is-invalid' : '' %>"
+              required>
+
+            <% if(validationErrors.find(e=> e.param === 'password')) { %>
+              <div class="invalid-feedback">
+                <%= validationErrors.find(e=> e.param === 'password').msg %>
+              </div>
+              <% } %>
+          </div>
         </div>
 
-        <button class="w-100 btn btn-lg btn-primary" type="submit">Sign in</button>
+        <div class="row mb-2">
+          <div class="col">
+            <label for="email">Confirm Password</label>
+            <input type="password" name="confirmPassword" id="confirmPassword" placeholder="Password"
+              value="<%= oldInput.confirmPassword %>"
+              class="form-control <%= validationErrors.find(e => e.param === 'confirmPassword') ? 'is-invalid' : '' %>"
+              required>
+
+            <% if(validationErrors.find(e=> e.param === 'confirmPassword')) { %>
+              <div class="invalid-feedback">
+                <%= validationErrors.find(e=> e.param === 'confirmPassword').msg %>
+              </div>
+              <% } %>
+          </div>
+        </div>
+
+        <button class="w-100 btn btn-lg btn-primary mt-3" type="submit">Sign Up</button>
 
         <p class="mt-3">Already have an account? <a href="/account/login">Login</a></p>
         <p class="mt-5 mb-3 text-muted">© 2021</p>

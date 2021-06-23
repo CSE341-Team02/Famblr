@@ -10,35 +10,36 @@
     </link>
 </head>
 
-<body class="text-center">
+<body xclass="text-center">
   <main class="form-signin">
     <form action="postLogin" method="POST">
       <!-- Add csrf token here if needed -->
-      <h1 class="famblr-logo">Famblr</h1>
-      <h2 class="h3 mb-3 fw-normal text-muted">Please sign in</h1>
+      <h1> <span class="famblr-logo">Famblr</span></h1>
+      <h2 class="h3 mb-3 fw-normal text-muted">Please Sign In</h1>
 
-        <div class="form-floating">
-          <div id="validationServer04Feedback" class="invalid-feedback mb-2">
-            Invalid Email or Password
-          </div>
-          <input type="email" name="email" value="<%= oldInput.email %>"
-            class="form-control <%= errorMessage ? 'is-invalid' : '' %>"
-            id="floatingInput" placeholder="name@example.com" required>
-          <label for="floatingInput">Email address</label>
-        </div>
 
-        <div class="form-floating">
-          <input type="password" name="password"
-            class="form-control <%= errorMessage ? 'is-invalid' : '' %>"
-            id="floatingPassword" placeholder="Password" required>
-          <label for="floatingPassword">Password</label>
-           
-          <div id="validationServer04Feedback" class="invalid-feedback mb-2">
-            <%= errorMessage %>
+
+        <div class="row mb-2">
+          <div class="col">
+            <label for="email">Email</label>
+            <input type="email" name="email" id="email" placeholder="name@example.com" value="<%= oldInput.email %>"
+              class="form-control  <%= errorMessage ? 'is-invalid' : '' %>" required>
           </div>
         </div>
 
-        <button class="mt-3 w-100 btn btn-lg btn-primary" type="submit">Sign in</button>
+        <div class="row mb-2">
+          <div class="col">
+            <label for="email">Password</label>
+            <input type="password" name="password" id="password" placeholder="Password" value="<%= oldInput.password %>"
+              class="form-control  <%= errorMessage ? 'is-invalid' : '' %>" required>
+
+            <div class="invalid-feedback">
+              <%= errorMessage %>
+            </div>
+          </div>
+        </div>
+
+        <button class="mt-3 w-100 btn btn-lg btn-primary mt-3" type="submit">Login</button>
 
         <p class="mt-3">Dont have an account? <a href="/account/signup">Sign Up</a></p>
         <p class="mt-5 mb-3 text-muted">© 2021</p>
@@ -47,4 +48,5 @@
 
   <%- include ('../partials/js-imports.ejs') %>
 </body>
+
 </html>
