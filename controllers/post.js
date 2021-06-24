@@ -25,3 +25,20 @@ exports.createPost = (req, res, next) => {
       return next(error);
     });
 };
+
+// POST /post/:id/json
+exports.editPostJSON = async (req, res, next) => {
+  let postID = req.params.id;
+  let newText = req.body.text;
+
+  let post = await Post.findById(postID);
+
+  // TODO
+  // If post.userId != currentUser, then throw unauthorized error
+
+  post.text = newText;
+
+  await post.save();
+
+  res.json({ post });
+};

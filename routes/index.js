@@ -6,6 +6,8 @@ router.use(require("./authentication")); // Login/Signup Pages
 
 router.use("/account", requiresLogin, require("./account")); // Account Pages
 
+router.use("/post", require("./post")); // Account Pages
+
 router.get("/", requiresLogin, indexController.getIndex); // Home Page
 
 module.exports = router;
