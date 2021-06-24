@@ -1,0 +1,113 @@
+<!------------------------------------------------------------------------------
+  index.ejs
+------------------------------------------------------------------------------->
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+    <%- include ('partials/head.ejs') %>
+</head>
+
+<body>
+    <%- include ('partials/sidebar.ejs') %>
+    <%- include ('partials/top-navbar.ejs') %>
+    <%- include ('partials/right-sidebar.ejs') %>
+
+    <div id="content-page" class="content-page">
+        <div class="container">
+
+            <div class="row">
+                <div class="col-lg-8 row m-0 p-0">
+
+                    <!-- Account Settings Card -->
+                    <div class="iq-card w-100">
+                        <div class="iq-card-header d-flex justify-content-between">
+                            <div class="iq-header-title">
+                                <h4 class="card-title">Account Setting</h4>
+                            </div>
+                        </div>
+                        <div class="iq-card-body">
+                            <div class="acc-edit">
+                                <form>
+                                    <div class="row">
+                                        <div class="col">
+                                            <div class="form-group">
+                                                <label for="firstName">First Name</label>
+                                                <input type="text" name="firstName" id="firstName"
+                                                    class="form-control" placeholder="First name"
+                                                    value="<%= user.firstName %>" required>
+                                            </div>
+                                        </div>
+                                        <div class="col">
+                                            <div class="form-group">
+                                                <label for="lastName">Last Name</label>
+                                                <input type="text" name="lastName" id="lastName"
+                                                    class="form-control" placeholder="Last name"
+                                                    value="<%= user.lastName %>" required>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="username">Username:</label>
+                                        <input type="text" name="username" class="form-control" id="username"
+                                            value="<%= user.username %>" required>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="email">Email:</label>
+                                        <input type="email" name="email" class="form-control" id="email"
+                                            value="<%= user.email %>" required>
+                                    </div>
+
+                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                    <button type="reset" class="btn iq-bg-danger">Cancle</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Update Password Card -->
+                    <div class="iq-card w-100">
+                        <div class="iq-card-header d-flex justify-content-between">
+                            <div class="iq-header-title">
+                                <h4 class="card-title">Update Password</h4>
+                            </div>
+                        </div>
+                        <div class="iq-card-body">
+                            <div class="acc-edit">
+                                <form>
+                                    <div class="form-group">
+                                        <label for="oldPassword">Current Password:</label>
+                                        <input type="password" name="oldPassword" class="form-control" id="oldPassword"
+                                            required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="newPassword">New Password:</label>
+                                        <input type="password" name="newPassword" class="form-control" id="newPassword"
+                                            required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="newPasswordConfirm">Confirm New Password:</label>
+                                        <input type="password" name="newPasswordConfirm" class="form-control" id="newPasswordConfirm"
+                                            required>
+                                    </div>
+
+                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                    <button type="reset" class="btn iq-bg-danger">Cancle</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <%- include ('partials/footer.ejs') %>
+    <%- include ('partials/js-imports.ejs') %>
+
+</body>
+
+</html>

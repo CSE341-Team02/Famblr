@@ -13,6 +13,8 @@ router.use(require("./feed"));
 
 router.use("/account", requiresLogin, require("./account")); // Account Pages
 
+router.use("/post", require("./post")); // Account Pages
+
 router.get("/", requiresLogin, indexController.getIndex); // Home Page
 
 router.get("/api", apiRoutes);
