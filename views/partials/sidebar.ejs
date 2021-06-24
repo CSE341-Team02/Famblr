@@ -2,15 +2,25 @@
     <div id="sidebar-scrollbar">
         <nav class="iq-sidebar-menu">
             <ul id="iq-sidebar-toggle" class="iq-menu">
-                <li class="active">
-                    <a href="/" class=" "><i class="las la-newspaper"></i><span>Newsfeed</span></a>
+
+                <li class="<% if(currentPath === "/") { %>active<%} %>">
+                    <a href="/" class=" ">
+                        <i class="las la-newspaper"></i><span>Newsfeed</span>
+                    </a>
                 </li>
-                <li>
-                    <a href="/account" class=" "><i class="las la-user"></i><span>Profile</span></a>
+
+                <li class="<% if(currentPath === "/account") { %>active<%} %>">
+                    <a href="/account" class=" ">
+                        <i class="las la-user"></i><span>Profile</span>
+                    </a>
                 </li>
-                <li>
-                    <a href="/family" class=" "><i class="las la-users"></i><span>Family Members</span></a>
+
+                <li class="<% if(currentPath === "/family") { %>active<%} %>">
+                    <a href="/family" class=" ">
+                        <i class="las la-users"></i><span>Family Members</span>
+                    </a>
                 </li>
+
             </ul>
         </nav>
         <div class="p-3"></div>
