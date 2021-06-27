@@ -1,8 +1,8 @@
 const router = require("express").Router();
-const authController = require("../controllers/authentication");
+const authController = require("../../controllers/frontend/authentication");
 const { check, body } = require("express-validator/check");
 const { Promise } = require("mongoose");
-const User = require("../models/user");
+const User = require("../../models/user");
 
 //GET Login page
 router.get("/login", authController.getLogin);

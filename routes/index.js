@@ -1,24 +1,11 @@
 const router = require("express").Router();
 
-// Controllers
-const indexController = require("../controllers");
-const requiresLogin = require("../middlewares/requiresLogin");
 
+// API Routes
+router.use("/api", require("./api"));
 
-// Inner Routes
-const apiRoutes = require("./api");
-
-router.use(require("./authentication")); // Login/Signup Pages
-router.use(require("./feed")); 
-
-router.use("/account", requiresLogin, require("./account")); // Account Pages
-
-router.use("/post", require("./post")); // Account Pages
-
-router.get("/", requiresLogin, indexController.getIndex); // Home Page
-
-router.get("/api", apiRoutes);
-
+// Frontend Routes
+router.use("/", require('./frontend'))
 
 
 module.exports = router;

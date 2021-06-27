@@ -32,7 +32,6 @@ app.set("view engine", "ejs");
 
 //Assigns routes to variables
 const routes = require("./routes");
-const postRoutes = require("./routes/feed.js");
 
 // For parsing the body of a POST
 app.use(bodyParser({ extended: false }));
@@ -78,7 +77,6 @@ app.use((req, res, next) => {
 
 //Route middlewares
 app.use("/", routes);
-app.use(postRoutes);
 
 const options = {
   useUnifiedTopology: true,
