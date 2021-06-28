@@ -11,25 +11,33 @@
 </head>
 
 <body xclass="text-center">
-  <main class="form-signin">
-    <form action="login" method="POST">
+  <main class="form-signin" id="signin-form">
+    <form @submit.prevent="postLogin">
       <!-- Add csrf token here if needed -->
       <h1> <span class="famblr-logo">Famblr</span></h1>
       <h2 class="h3 mb-3 fw-normal text-muted">Please Sign In</h1>
 
+        <div v-if="errorMessage" class="row">
+          <div class="alert alert-danger text-bold" role="alert">
+            <strong>
+              {{errorMessage}}
+            </strong>
+          </div>
+        </div>
+
         <div class="row mb-2">
           <div class="col">
-            <label for="email">Email</label>
-            <input type="email" name="email" id="email" placeholder="name@example.com" value="<%= oldInput.email %>"
-              class="form-control  <%= errorMessage ? 'is-invalid' : '' %>" required>
+            <label for="email">Username or Email</label>
+            <input type="text" v-model="email" name="email" id="email" placeholder="Username or Email"
+              value="<%= oldInput.email %>" class="form-control  <%= errorMessage ? 'is-invalid' : '' %>" required>
           </div>
         </div>
 
         <div class="row mb-2">
           <div class="col">
             <label for="email">Password</label>
-            <input type="password" name="password" id="password" placeholder="Password" value="<%= oldInput.password %>"
-              class="form-control  <%= errorMessage ? 'is-invalid' : '' %>" required>
+            <input type="password" v-model="password" name="password" id="password" placeholder="Password"
+              value="<%= oldInput.password %>" class="form-control  <%= errorMessage ? 'is-invalid' : '' %>" required>
 
             <div class="invalid-feedback">
               <%= errorMessage %>
@@ -39,12 +47,46 @@
 
         <button class="mt-3 w-100 btn btn-lg btn-primary mt-3" type="submit">Login</button>
 
+
+
         <p class="mt-3">Dont have an account? <a href="/signup">Sign Up</a></p>
         <p class="mt-5 mb-3 text-muted">© 2021</p>
     </form>
   </main>
 
-  <%- include ('../partials/js-imports.ejs') %>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+  <script>
+    const loginApp = new Vue({
+      el: 'main',
+      data: {
+        email: "",
+        password: "",
+        errorMessage: null
+      },
+      methods: {
+        postLogin: async function () {
+          try {
+            errorMessage = null;
+
+            let response = await axios.post("/api/auth/login", {
+              email: this.email,
+              password: this.password
+            })
+
+            localStorage.famblrToken = response.data.token;
+
+            window.location.href = "/"
+
+          } catch (error) {
+            this.errorMessage = error.response.data.error;
+            console.error(this.errorMessage)
+          }
+        }
+      },
+    })
+  </script>
+
 </body>
 
 </html>

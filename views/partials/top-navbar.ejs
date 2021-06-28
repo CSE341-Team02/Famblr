@@ -25,7 +25,8 @@
                                 class="img-fluid rounded-circle mr-3" alt="user">
                             <div class="caption">
                                 <h6 class="mb-0 line-height">
-                                    <%= user.firstName %> <%= user.lastName %> 
+                                    <%= user.firstName %>
+                                        <%= user.lastName %>
                                 </h6>
                             </div>
                         </a>
@@ -40,7 +41,9 @@
                             <div class="iq-card shadow-none m-0">
                                 <div class="iq-card-body p-0 ">
                                     <div class="bg-primary p-3 line-height">
-                                        <h5 class="mb-0 text-white line-height">Hello <%= user.firstName %> <%= user.lastName %> </h5>
+                                        <h5 class="mb-0 text-white line-height">Hello <%= user.firstName %>
+                                                <%= user.lastName %>
+                                        </h5>
                                     </div>
                                     <a href="/account" class="iq-sub-card iq-bg-primary-hover">
                                         <div class="media align-items-center">
@@ -65,7 +68,7 @@
                                         </div>
                                     </a>
                                     <div class="d-inline-block w-100 text-center p-3">
-                                        <form action="/logout" method="POST">
+                                        <form action="javascript:fambrLogout()">
                                             <button type="submit" class="bg-primary iq-sign-btn" role="button">Sign
                                                 out<i class="ri-login-box-line ml-2"></i></a>
                                         </form>
@@ -79,3 +82,9 @@
         </nav>
     </div>
 </div>
+<script>
+    function fambrLogout() {
+        delete localStorage.famblrToken;
+        window.location.href = "/logout"
+    }
+</script>
