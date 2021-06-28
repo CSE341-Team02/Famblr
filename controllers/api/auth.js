@@ -4,11 +4,19 @@ const User = require("../../models/user");
 
 exports.login = async (req, res, next) => {
   try {
+    // Let users sign in with either email or username
     const email = req.body.email;
+    const username = req.body.username;
+
     const password = req.body.password;
 
     // Find user in Database
-    const user = await User.findOne({ email: email });
+    let user = await User.findOne({ email: email || username });
+
+    // Try searching by username if none found by email
+    if (!user) {
+      user = await User.findOne({ username: username || email })
+    }
 
     // Throw error if email not found
     if (!user) throw new Error("Invalid Username or Password");
@@ -22,7 +30,7 @@ exports.login = async (req, res, next) => {
     // Generate JWT
     const token = jwt.sign(
       {
-        email: user.email,
+        username: user.username,
         userId: user._id.toString(),
       },
       "somesupersecretsecret",
