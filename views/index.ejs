@@ -1,6 +1,3 @@
-<!------------------------------------------------------------------------------
-  index.ejs
-------------------------------------------------------------------------------->
 <!DOCTYPE html>
 <html lang="en-US">
 
@@ -9,7 +6,6 @@
 </head>
 
 <body>
-  <!-- <h1><span class="famblr-logo">Famblr</span></h1> -->
   <%- include ('partials/sidebar.ejs') %>
     <%- include ('partials/top-navbar.ejs') %>
       <%- include ('partials/right-sidebar.ejs') %>
@@ -34,7 +30,7 @@
                               <!-- Post Profile Image -->
                               <div class="media-support-user-img mr-3">
                                 <img class="rounded-circle img-fluid"
-                                  v-bind:src="post.userId.image || '/images/profile.png'" alt="">
+                                  v-bind:src="post.userId.profilePicture ? '/uploads/' + post.userId.profilePicture : '/images/profile.png'" alt="">
                               </div>
 
                               <!-- Post Name and Date -->
@@ -133,8 +129,6 @@
         <%- include ('partials/footer.ejs') %>
           <%- include ('partials/js-imports.ejs') %>
 
-            <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-            <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
             <script>
               const loginApp = new Vue({
                 el: '#post-list',

@@ -17,7 +17,7 @@ exports.getAllPosts = async (req, res, next) => {
     .sort({ date: "desc" })
     .skip(parseInt(req.query.offset))
     .limit(parseInt(req.query.limit))
-    .populate("userId", ["username", "firstName", "lastName"])
+    .populate("userId", ["username", "firstName", "lastName", "profilePicture"])
     .then(allPosts => {
 
       res.json({
