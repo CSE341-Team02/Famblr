@@ -13,6 +13,9 @@ router.use(require("./authentication"));
 // Account Pages
 router.use("/account", requiresLogin, require("./account"));
 
+// Post Pages
+router.use("/posts", requiresLogin, require("./posts"));
+
 // Homepage ( Newsfeed )
 router.get("/", requiresLogin, indexController.getIndex);
 
