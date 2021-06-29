@@ -23,6 +23,12 @@ const userSchema = new Schema({
         type: String,
         required: true
     },
+    profilePicture: {
+        type: Schema.Types.ObjectId,
+        ref: 'Image',
+        required: false
+    },
+    createdAt: { type: Date, required: true, default: Date.now },
     resetToken: String,
     resetTokenExpiration: Date
 });
