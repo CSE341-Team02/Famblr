@@ -30,14 +30,48 @@
                         <div class="iq-card-body">
                           <div class="user-post-data">
                             <div class="d-flex flex-wrap">
+
+                              <!-- Post Profile Image -->
                               <div class="media-support-user-img mr-3">
                                 <img class="rounded-circle img-fluid"
-                                v-bind:src="post.userId.image || '/images/profile.png'" alt="">
+                                  v-bind:src="post.userId.image || '/images/profile.png'" alt="">
                               </div>
+
+                              <!-- Post Name and Date -->
                               <div class="media-support-info mt-2">
                                 <h5 class="mb-0 d-inline-block"><a href="#" class="">
                                     {{post.userId.firstName}} {{post.userId.lastName}}</a></h5>
                                 <p class="mb-0 text-primary">{{ formatDate(post.date)}}</p>
+                              </div>
+
+                              <!-- Post Context Menu -->
+                              <div v-if="post.userId._id == userId" class="iq-card-post-toolbar">
+                                <div class="dropdown">
+                                  <span class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                                    aria-expanded="false" role="button">
+                                    <i class="ri-more-fill"></i>
+                                  </span>
+                                  <div class="dropdown-menu m-0 p-0">
+                                    <a class="dropdown-item p-3" v-bind:href="`/posts/${post._id}/edit`">
+                                      <div class="d-flex align-items-top">
+                                        <div class="icon font-size-20"><i class="ri-edit-line"></i></div>
+                                        <div class="data ml-2">
+                                          <h6>Edit Post</h6>
+                                          <p class="mb-0">Make changes to your post</p>
+                                        </div>
+                                      </div>
+                                    </a>
+                                    <a class="dropdown-item p-3" @click="deletePost(post._id)">
+                                      <div class="d-flex align-items-top">
+                                        <div class="icon font-size-20"><i class="ri-close-circle-line"></i></div>
+                                        <div class="data ml-2">
+                                          <h6>Delete Post</h6>
+                                          <p class="mb-0">Permanently remove this post</p>
+                                        </div>
+                                      </div>
+                                    </a>
+                                  </div>
+                                </div>
                               </div>
 
                             </div>
@@ -48,17 +82,16 @@
                             <p>{{ post.text }}</p>
                           </div>
 
+                          <!-- Post Image -->
                           <div v-if="post.image" class="user-post">
-                            <!-- Post Image -->
-                            <a><img v-bind:src="post.image" alt="post-image"
-                                class="img-fluid rounded w-100"></a>
+                            <a><img v-bind:src="post.image" alt="post-image" class="img-fluid rounded w-100"></a>
                           </div>
 
                           <div class="comment-area mt-3">
                             <hr>
+
                             <!-- Comments -->
                             <ul class="post-comments p-0 m-0">
-
                               <li v-for="comment in post.comments" class="mb-2">
                                 <div class="d-flex flex-wrap">
                                   <div class="user-img">
@@ -71,8 +104,6 @@
                                   </div>
                                 </div>
                               </li>
-
-
                             </ul>
 
                             <!-- Reply Box -->
@@ -83,6 +114,7 @@
                               </div>
                             </form>
                           </div>
+
                         </div>
                       </div>
                     </div>
@@ -107,6 +139,7 @@
               const loginApp = new Vue({
                 el: '#post-list',
                 data: {
+                  userId: `<%= user._id %>`,
                   loading: true,
                   limit: 5,
                   offset: 0,
@@ -116,7 +149,7 @@
                 mounted: async function () {
                   this.loadPosts();
 
-                  //Add watcher to load more posts when widow scrolls to bottom of page
+                  //Add watcher to load more posts when window scrolls to bottom of page
                   window.onscroll = () => {
                     let bottomOfWindow =
                       document.documentElement.scrollTop + window.innerHeight ===
@@ -130,7 +163,7 @@
                   postId: function () {
                     return window.location.pathname.split("/")[2];
                   },
-                  morePostsToLoad: function() {
+                  morePostsToLoad: function () {
                     return this.posts.length !== this.totalItems;
                   }
                 },
@@ -154,6 +187,19 @@
 
                     } finally {
                       this.loading = false;
+                    }
+                  },
+                  deletePost: async function (postId) {
+                    console.log("Deleting: ", postId)
+                    this.posts = this.posts.filter(post => {
+                      return post._id != postId
+                    })
+
+                    try {
+                      let response = await axios.delete(`/api/posts/${postId}`)
+                      console.log("Post Deleted from DB")
+                    } catch (error) {
+                      console.error(error)
                     }
                   },
                   formatDate(date) {
