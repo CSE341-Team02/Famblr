@@ -3,10 +3,11 @@ const Comment = require("../../models/comment");
 
 // Create Comment
 exports.createComment = (req, res, next) => {
-    const contentText = req.body.contentText;
+    const commentText = req.body.commentText;
   
     const comment = new Comment({
-      text: contentText,
+      // relatedPost: relatedPost,
+      text: commentText,
       userId: req.user
     });
   
