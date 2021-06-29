@@ -2,19 +2,46 @@ const Post = require("../../models/post");
 
 // Get All Posts
 exports.getAllPosts = (req, res, next) => {
-  res.json({
-    posts: "todos",
-  });
-  /*Post.find()
+  if(req.query.limit) {
+    
+  }
+  if (req.query.offset) {
+
+  }
+  (async function() {
+
+    const totalItems = await Post.count();
+    console.log(totalItems);
+
+    
+  })()
+
+  Post.find()
+  .sort({date: "desc"})
+  .skip( parseInt(req.query.offset))
+  .limit(parseInt(req.query.limit))
   .then( allPosts => {
 
     res.json({
-      allPosts
+      allPosts:allPosts
     });
   })
   .catch(error => {
-    console.log(eror);
-  });*/
+    console.log(error);
+  });
+  
+};
+
+exports.getPostById = (req, res, next) => {
+  const postId = req.params.postId;
+
+  Post.findById(postId)
+  .then( post => {
+    res.json(post);
+  })
+  .catch( error => {
+    console.log(error);
+  });
 };
 
 // Create Post

@@ -23,7 +23,7 @@
     </body>
     <script>
         document.getElementById("createPost").addEventListener('click', () => {
-            fetch('http://localhost:5000/feed/post', {
+            fetch('/feed/post', {
                 method: 'POST',
                 body: JSON.stringify({
                     contentText: document.getElementById('contentText').value

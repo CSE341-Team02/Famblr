@@ -9,6 +9,8 @@ router.get("/", postsController.getAllPosts);
 // Create Post
 router.post("/", postsController.createPost);
 
+router.get("/:postId", postsController.getPostById);
+
 // Edit Post
 router.put("/:postId", postsController.editPost);
 
