@@ -45,7 +45,7 @@
                               </div>
 
                               <!-- Post Context Menu -->
-                              <div v-if="post.userId._id == userId" class="iq-card-post-toolbar">
+                              <div v-if="post.userId._id == user.userId" class="iq-card-post-toolbar">
                                 <div class="dropdown">
                                   <span class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
                                     aria-expanded="false" role="button">
@@ -139,7 +139,7 @@
               const loginApp = new Vue({
                 el: '#post-list',
                 data: {
-                  userId: `<%= user._id %>`,
+                  user: null,
                   loading: true,
                   limit: 5,
                   offset: 0,
@@ -147,6 +147,8 @@
                   posts: [],
                 },
                 mounted: async function () {
+                  this.user = jwt_decode(localStorage.famblrToken);
+
                   this.loadPosts();
 
                   //Add watcher to load more posts when window scrolls to bottom of page
