@@ -1,47 +1,46 @@
 const Post = require("../../models/post");
 
 // Get All Posts
-exports.getAllPosts = (req, res, next) => {
-  if(req.query.limit) {
-    
+exports.getAllPosts = async (req, res, next) => {
+  if (req.query.limit) {
+
   }
   if (req.query.offset) {
 
   }
-  (async function() {
 
-    const totalItems = await Post.count();
-    console.log(totalItems);
+  const totalItems = await Post.countDocuments();
+  console.log(totalItems);
 
-    
-  })()
 
   Post.find()
-  .sort({date: "desc"})
-  .skip( parseInt(req.query.offset))
-  .limit(parseInt(req.query.limit))
-  .then( allPosts => {
+    .sort({ date: "desc" })
+    .skip(parseInt(req.query.offset))
+    .limit(parseInt(req.query.limit))
+    .populate("userId", ["username", "firstName", "lastName"])
+    .then(allPosts => {
 
-    res.json({
-      allPosts:allPosts
+      res.json({
+        totalItems: totalItems,
+        allPosts: allPosts
+      });
+    })
+    .catch(error => {
+      console.log(error);
     });
-  })
-  .catch(error => {
-    console.log(error);
-  });
-  
+
 };
 
 exports.getPostById = (req, res, next) => {
   const postId = req.params.postId;
 
   Post.findById(postId)
-  .then( post => {
-    res.json(post);
-  })
-  .catch( error => {
-    console.log(error);
-  });
+    .then(post => {
+      res.json(post);
+    })
+    .catch(error => {
+      console.log(error);
+    });
 };
 
 // Create Post

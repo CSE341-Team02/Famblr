@@ -11,91 +11,158 @@
 <body>
   <!-- <h1><span class="famblr-logo">Famblr</span></h1> -->
   <%- include ('partials/sidebar.ejs') %>
-  <%- include ('partials/top-navbar.ejs') %>
-  <%- include ('partials/right-sidebar.ejs') %>
+    <%- include ('partials/top-navbar.ejs') %>
+      <%- include ('partials/right-sidebar.ejs') %>
 
-  <div id="content-page" class="content-page">
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-8 row m-0 p-0">
+        <div id="content-page" class="content-page">
+          <div id="app" class="container">
+            <div class="row">
+              <div class="col-lg-8 row m-0 p-0">
 
-          <!-- Import the create post form -->
-          <%- include ('partials/create-post.ejs') %>
+                <!-- Import the create post form -->
+                <%- include ('partials/create-post.ejs') %>
 
-            <!-- Here is an example post -->
-            <div class="col-sm-12">
-              <div class="iq-card iq-card-block iq-card-stretch iq-card-height">
-                <div class="iq-card-body">
-                  <div class="user-post-data">
-                    <div class="d-flex flex-wrap">
-                      <div class="media-support-user-img mr-3">
-                        <img class="rounded-circle img-fluid" src="https://randomuser.me/api/portraits/lego/3.jpg"
-                          alt="">
+                  <div id="post-list" style="width: 100%;">
+
+                    <!-- Post -->
+                    <div v-for="(post, index) in posts" class="col-sm-12 famblrPost">
+                      <div class="iq-card iq-card-block iq-card-stretch iq-card-height">
+                        <div class="iq-card-body">
+                          <div class="user-post-data">
+                            <div class="d-flex flex-wrap">
+                              <div class="media-support-user-img mr-3">
+                                <img class="rounded-circle img-fluid"
+                                v-bind:src="post.userId.image || '/images/profile.png'" alt="">
+                              </div>
+                              <div class="media-support-info mt-2">
+                                <h5 class="mb-0 d-inline-block"><a href="#" class="">
+                                    {{post.userId.firstName}} {{post.userId.lastName}}</a></h5>
+                                <p class="mb-0 text-primary">{{ formatDate(post.date)}}</p>
+                              </div>
+
+                            </div>
+                          </div>
+
+                          <!-- Post Text -->
+                          <div class="mt-3">
+                            <p>{{ post.text }}</p>
+                          </div>
+
+                          <div v-if="post.image" class="user-post">
+                            <!-- Post Image -->
+                            <a><img v-bind:src="post.image" alt="post-image"
+                                class="img-fluid rounded w-100"></a>
+                          </div>
+
+                          <div class="comment-area mt-3">
+                            <hr>
+                            <!-- Comments -->
+                            <ul class="post-comments p-0 m-0">
+
+                              <li v-for="comment in post.comments" class="mb-2">
+                                <div class="d-flex flex-wrap">
+                                  <div class="user-img">
+                                    <img src="https://randomuser.me/api/portraits/lego/5.jpg" alt="userimg"
+                                      class="avatar-35 rounded-circle img-fluid">
+                                  </div>
+                                  <div class="comment-data-block ml-3">
+                                    <h6>Monty Carlo</h6>
+                                    <p class="mb-0">Lorem ipsum dolor sit amet</p>
+                                  </div>
+                                </div>
+                              </li>
+
+
+                            </ul>
+
+                            <!-- Reply Box -->
+                            <form class="comment-text d-flex align-items-center mt-3" action="javascript:void(0);">
+                              <input type="text" class="form-control rounded" placeholder="Reply...">
+                              <div class="comment-attagement d-flex">
+                                <button type="submit" class="btn btn-light d-block mr-1">Reply</button>
+                              </div>
+                            </form>
+                          </div>
+                        </div>
                       </div>
-                      <div class="media-support-info mt-2">
-                        <h5 class="mb-0 d-inline-block"><a href="#" class="">Barb Ackue</a></h5>
-                        <p class="mb-0 text-primary">1 hour ago</p>
-                      </div>
+                    </div>
+                    <!-- End of Posts -->
 
+                    <div v-if="morePostsToLoad" class="col-sm-12 text-center">
+                      <image src="/images/spinner_transparent.gif" style="margin: 0 auto;"></image>
                     </div>
                   </div>
-                  <div class="mt-3">
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi nulla dolor, ornare at
-                      commodo
-                      non, feugiat non nisi. Phasellus faucibus mollis pharetra. Proin blandit ac massa sed
-                      rhoncus
-                    </p>
-                  </div>
-                  <div class="user-post">
-                    <a href="javascript:void();"><img src="https://picsum.photos/621/400" alt="post-image"
-                        class="img-fluid rounded w-100"></a>
-                  </div>
-                  <div class="comment-area mt-3">
-                    <hr>
-                    <ul class="post-comments p-0 m-0">
-                      <li class="mb-2">
-                        <div class="d-flex flex-wrap">
-                          <div class="user-img">
-                            <img src="https://randomuser.me/api/portraits/lego/5.jpg" alt="userimg"
-                              class="avatar-35 rounded-circle img-fluid">
-                          </div>
-                          <div class="comment-data-block ml-3">
-                            <h6>Monty Carlo</h6>
-                            <p class="mb-0">Lorem ipsum dolor sit amet</p>
-                          </div>
-                        </div>
-                      </li>
-                      <li>
-                        <div class="d-flex flex-wrap">
-                          <div class="user-img">
-                            <img src="https://randomuser.me/api/portraits/lego/3.jpg" alt="userimg"
-                              class="avatar-35 rounded-circle img-fluid">
-                          </div>
-                          <div class="comment-data-block ml-3">
-                            <h6>Paul Molive</h6>
-                            <p class="mb-0">Lorem ipsum dolor sit amet</p>
-                          </div>
-                        </div>
-                      </li>
-                    </ul>
-                    <form class="comment-text d-flex align-items-center mt-3" action="javascript:void(0);">
-                      <input type="text" class="form-control rounded" placeholder="Reply...">
-                      <div class="comment-attagement d-flex">
-                        <button type="submit" class="btn btn-light d-block mr-1">Reply</button>
-                      </div>
-                    </form>
-                  </div>
-                </div>
+
               </div>
             </div>
+          </div>
         </div>
-      </div>
-    </div>
-  </div>
 
-  <%- include ('partials/footer.ejs') %>
-  <%- include ('partials/js-imports.ejs') %>
-  
+        <%- include ('partials/footer.ejs') %>
+          <%- include ('partials/js-imports.ejs') %>
+
+            <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+            <script>
+              const loginApp = new Vue({
+                el: '#post-list',
+                data: {
+                  loading: true,
+                  limit: 5,
+                  offset: 0,
+                  totalItems: null,
+                  posts: [],
+                },
+                mounted: async function () {
+                  this.loadPosts();
+
+                  //Add watcher to load more posts when widow scrolls to bottom of page
+                  window.onscroll = () => {
+                    let bottomOfWindow =
+                      document.documentElement.scrollTop + window.innerHeight ===
+                      document.documentElement.offsetHeight;
+                    if (bottomOfWindow) {
+                      this.loadPosts(this.query);
+                    }
+                  };
+                },
+                computed: {
+                  postId: function () {
+                    return window.location.pathname.split("/")[2];
+                  },
+                  morePostsToLoad: function() {
+                    return this.posts.length !== this.totalItems;
+                  }
+                },
+                methods: {
+                  loadPosts: async function () {
+                    if (this.offset > this.totalItems) return;
+                    try {
+                      this.loading = true;
+                      let response = await axios.get(`/api/posts?limit=${this.limit}&offset=${this.offset}`)
+
+                      this.posts = [
+                        ...this.posts,
+                        ...response.data.allPosts
+                      ];
+                      this.totalItems = response.data.totalItems;
+
+                      this.offset += this.limit;
+
+                    } catch (error) {
+                      console.error(error)
+
+                    } finally {
+                      this.loading = false;
+                    }
+                  },
+                  formatDate(date) {
+                    return new Date(date).toLocaleString()
+                  }
+                },
+              })
+            </script>
+
 </body>
 
 </html>
