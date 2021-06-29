@@ -46,12 +46,10 @@ exports.getPostById = (req, res, next) => {
 // Create Post
 exports.createPost = (req, res, next) => {
   const contentText = req.body.contentText;
-  // const contentImage = req.body.contentImage;
 
   const post = new Post({
     text: contentText,
-    userId: req.user,
-    // ,contentImage: contentImage
+    userId: req.user
   });
 
   post

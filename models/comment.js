@@ -2,8 +2,9 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema;
 
 const Comment = new Schema({
-  author: {
-    type: String,
+  userId: {
+    type: Schema.Types.ObjectId,
+    ref: "User",
     required: true
   }, 
   relatedPost: {
@@ -13,13 +14,17 @@ const Comment = new Schema({
   },
   createdDate: {
     type: Date,
-    required: true
-  },
-  lastModification: Date,
-  content: {
-    type: String,
     required: true,
     default: Date.now
+  },
+  lastModification: {
+    type: Date,
+    required: true,
+    default: Date.now
+  },
+  content: {
+    type: String,
+    required: true
   },
   reactions: {
     totalLikes: {

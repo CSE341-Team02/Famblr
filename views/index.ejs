@@ -86,8 +86,10 @@
                           <div class="comment-area mt-3">
                             <hr>
 
+                            <%- include ('partials/create-comment.ejs') %>
+
                             <!-- Comments -->
-                            <ul class="post-comments p-0 m-0">
+                            <!-- <ul class="post-comments p-0 m-0">
                               <li v-for="comment in post.comments" class="mb-2">
                                 <div class="d-flex flex-wrap">
                                   <div class="user-img">
@@ -100,15 +102,15 @@
                                   </div>
                                 </div>
                               </li>
-                            </ul>
+                            </ul> -->
 
                             <!-- Reply Box -->
-                            <form class="comment-text d-flex align-items-center mt-3" action="javascript:void(0);">
+                            <!-- <form class="comment-text d-flex align-items-center mt-3" action="javascript:void(0);">
                               <input type="text" class="form-control rounded" placeholder="Reply...">
                               <div class="comment-attagement d-flex">
                                 <button type="submit" class="btn btn-light d-block mr-1">Reply</button>
                               </div>
-                            </form>
+                            </form> -->
                           </div>
 
                         </div>
