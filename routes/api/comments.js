@@ -9,7 +9,7 @@ router.post("/", commentsController.createComment);
 //router.get("/:postId", postsController.getPostById);
 
 // Edit Post
-router.put("/:postId", postsController.editPost);
+// router.put("/:postId", commentsController.editPost);
 
 // Delete Post
 // ...

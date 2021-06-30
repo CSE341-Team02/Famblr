@@ -168,21 +168,24 @@
                 },
                 methods: {
                   createComment: async function (postId) {
-                    
-                    fetch('/api/comments', {
-                        method: 'POST',
-                        body: JSON.stringify({
+                    return await axios.post('/api/comments', {
                             relatedPost: postId,
                             content: document.getElementById(postId).value
-                        }),
-                        headers: {
-                            'Content-Type': 'application/json'
-                        }
                     }).then(response => {
                         console.log("Comment Created Successfully!")
                         console.log(response)
-                        document.getElementById('commentText').value = null;
+                        document.getElementById(postId).value = null;
                     })
+                    // fetch('/api/comments', {
+                    //     method: 'POST',
+                    //     body: JSON.stringify({
+                    //         relatedPost: postId,
+                    //         content: document.getElementById(postId).value
+                    //     }),
+                    //     headers: {
+                    //         'Content-Type': 'application/json'
+                    //     }
+                    // })
                   },
                   loadPosts: async function () {
                     if (this.offset > this.totalItems) return;
