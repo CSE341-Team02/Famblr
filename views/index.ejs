@@ -85,7 +85,8 @@
 
                           <div class="comment-area mt-3">
                             <hr>
-                            <input type="hidden" id="postId" ng-value="{{post.userId}}"/>
+                            <input type="hidden" id="postId" v-model="post._id"/>
+                            <p>{{post._id}}</p>
                             <!-- Comments -->
                               <ul class="post-comments p-0 m-0">
                                 <li v-for="comment in post.comments" class="mb-2">
