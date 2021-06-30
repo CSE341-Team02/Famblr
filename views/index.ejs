@@ -89,29 +89,6 @@
 
                             <%- include('partials/create-comment.ejs') %>
                               
-                            <!-- Comments -->
-                            <!-- <ul class="post-comments p-0 m-0">
-                              <li v-for="comment in post.comments" class="mb-2">
-                                <div class="d-flex flex-wrap">
-                                  <div class="user-img">
-                                    <img src="/images/profile.png" alt="userimg"
-                                      class="avatar-35 rounded-circle img-fluid">
-                                  </div>
-                                  <div class="comment-data-block ml-3">
-                                    <h6>Monty Carlo</h6>
-                                    <p class="mb-0">Lorem ipsum dolor sit amet</p>
-                                  </div>
-                                </div>
-                              </li>
-                            </ul> -->
-
-                            <!-- Reply Box -->
-                            <!-- <form class="comment-text d-flex align-items-center mt-3" action="javascript:void(0);">
-                              <input type="text" class="form-control rounded" placeholder="Reply...">
-                              <div class="comment-attagement d-flex">
-                                <button type="submit" class="btn btn-light d-block mr-1">Reply</button>
-                              </div>
-                            </form> -->
                           </div>
 
                         </div>
@@ -176,16 +153,6 @@
                         console.log(response)
                         document.getElementById(postId).value = null;
                     })
-                    // fetch('/api/comments', {
-                    //     method: 'POST',
-                    //     body: JSON.stringify({
-                    //         relatedPost: postId,
-                    //         content: document.getElementById(postId).value
-                    //     }),
-                    //     headers: {
-                    //         'Content-Type': 'application/json'
-                    //     }
-                    // })
                   },
                   loadPosts: async function () {
                     if (this.offset > this.totalItems) return;
