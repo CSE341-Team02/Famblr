@@ -16,8 +16,8 @@
 <!-- Reply Box -->
 <!-- I change this to a div instead of a form to stick with our no-forms idea.
     This may be where we need to fix the alignment of the reply button -->
-<div class="comment-text d-flex align-items-center mt-3" >
-    <input type="text" v-bind:id="post._id" class="form-control rounded" placeholder="Reply...">
+<div class="comment-text d-flex align-items-center mt-3" style="position: relative;">
+    <input type="text" v-bind:id="post._id" class="form-control rounded" placeholder="Reply..."  style="padding-right: 130px;">
     <div class="comment-attagement d-flex">
         <button type="submit" id="createComment" class="btn btn-light d-block mr-1" v-on:click="createComment(post._id)">Reply</button>
     </div>
