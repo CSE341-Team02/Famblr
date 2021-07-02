@@ -109,7 +109,36 @@ exports.editPost = async (req, res, next) => {
 
 // TODO
 // Delete Post
-// ...
+exports.deletePost = async (req, res, next) => {
+  consol.log("deletePost");
+  try {
+    let postId = req.params.postId;
+
+    // Find post by the postId in the url
+    let post = await Post.findById(postId);
+
+    // Throw 404 if post not found
+    if (!post) {
+      let error = new Error("Post Not Found");
+      error.statusCode = 404;
+      throw error;
+    }
+
+    // Thow 403-Forbidden error if trying to delete post created by different user
+    if (req.session.user._id.toString() != post.userId.toString()) {
+      let error = new Error("Post created by different user");
+      error.statusCode = 403;
+      throw error;
+    }
+
+    // Save Changes to MongoDB
+    await post.delete();
+
+  } catch (error) {
+    // Return error if one is thrown
+    return res.status(error.statusCode || 400).json({ error: error.message });
+  }
+};
 
 // Test Get Posts Route
 // exports.testGetPosts = async (req, res, next) => {
