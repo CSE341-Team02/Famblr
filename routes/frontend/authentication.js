@@ -35,7 +35,7 @@ router.post(
   [
     check("username")
       .isAlphanumeric()
-      .withMessage("Usermane must contain only letters or numbers")
+      .withMessage("Username must contain only letters or numbers")
       .custom((value, { req }) => {
         return User.findOne({ username: req.body.username }).then((userDoc) => {
           if (userDoc) {
@@ -59,7 +59,7 @@ router.post(
       }),
     body(
       "password",
-      "Please enter a passwords with only numbers and text and at least 5 characters."
+      "Please enter a password with only numbers and text and at least 5 characters."
     )
       .isLength({ min: 6 })
       .isAlphanumeric(),
