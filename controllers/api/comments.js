@@ -1,16 +1,17 @@
 // Comments API Call Logic
 const Comment = require("../../models/comment");
 
+
 // Create Comment
 // POST /api/comments
-exports.createComment = (req, res, next) => {
+exports.createComment = async (req, res, next) => {
   const commentText = req.body.content;
   const relatedPost = req.body.relatedPost;
 
   const comment = new Comment({
     relatedPost: relatedPost,
     content: commentText,
-    userId: req.user
+    userId: req.user,
   });
 
   comment
@@ -30,29 +31,61 @@ exports.createComment = (req, res, next) => {
 
 // Get All Comments for a post
 // GET /api/comments/post/:postId
-exports.getCommentsForPost = (req, res, next) => {
+exports.getCommentsForPost = async (req, res, next) => {
 
   // TODO: Get Comments
 
-  return res.json([])
+  return res.json([]);
 };
 
 
 // Edit Comment
 // PUT /api/comments/:commentId
-exports.editComment = (req, res, next) => {
+exports.editComment = async (req, res, next) => {
+  try {
+    let commentId = req.params.commentId;
+    let newContent = req.body.content;
 
-  // TODO: Update Comment
+    // Throw error if no text provided
+    if (!newContent) throw new Error("Missing content");
 
-  return res.json({})
-}
+    // Find Comment by the commentId in the url
+    let comment = await Comment.findById(commentId);
+
+    // Throw 404 if Comment not found
+    if (!comment) {
+      let error = new Error("Comment Not Found");
+      error.statusCode = 404;
+      throw error;
+    }
+
+    // Thow 403-Forbidden error if trying to edit Comment created by different user
+    if (req.session.user._id.toString() != comment.userId.toString()) {
+      let error = new Error("Comment created by different user");
+      error.statusCode = 403;
+      throw error;
+    }
+
+    // Set the new post text
+    comment.content = newContent;
+    comment.lastModification = new Date();
+
+    // Save Changes to MongoDB
+    await comment.save();
+
+    // Return Updated Post
+    return res.json({ comment });
+  } catch (error) {
+    return next(error);
+  }
+};
 
 
 // Delete Comment
 // DELETE /api/comments/:commentId
-exports.deleteComment = (req, res, next) => {
+exports.deleteComment = async (req, res, next) => {
 
   // TODO: Delete Comment
 
-  return res.json({})
-}
+  return res.json({});
+};
