@@ -6,12 +6,13 @@ const commentsController = require("../../controllers/api/comments");
 // Create Post
 router.post("/", commentsController.createComment);
 
-//router.get("/:postId", postsController.getPostById);
+// Get Comments For Post 
+router.get("/post/:postId", commentsController.getCommentsForPost);
 
-// Edit Post
-// router.put("/:postId", commentsController.editPost);
+// Edit Comment
+router.put("/:commentId", commentsController.editComment);
 
-// Delete Post
-// ...
+// Delete Comment
+router.delete("/:commentId", commentsController.deleteComment);
 
 module.exports = router;
