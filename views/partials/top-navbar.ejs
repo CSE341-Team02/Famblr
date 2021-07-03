@@ -21,7 +21,8 @@
                 <ul class="navbar-nav ml-auto navbar-list">
                     <li>
                         <a href="/account" class="  d-flex align-items-center">
-                            <img id="top-nav-profile-pic" src="/images/profile.png"
+                            <img id="top-nav-profile-pic"
+                                v-bind:src="user && user.profilePicture ? `/uploads/${user.profilePicture}` : '/images/profile.png'"
                                 class="img-fluid rounded-circle mr-3" alt="user">
                             <div class="caption">
                                 <h6 class="mb-0 line-height">
@@ -68,7 +69,7 @@
                                         </div>
                                     </a>
                                     <div class="d-inline-block w-100 text-center p-3">
-                                        <form action="javascript:fambrLogout()">
+                                        <form action="javascript:famblrLogout()">
                                             <button type="submit" class="bg-primary iq-sign-btn" role="button">Sign
                                                 out<i class="ri-login-box-line ml-2"></i></a>
                                         </form>
@@ -82,9 +83,3 @@
         </nav>
     </div>
 </div>
-<script>
-    function fambrLogout() {
-        delete localStorage.famblrToken;
-        window.location.href = "/logout"
-    }
-</script>

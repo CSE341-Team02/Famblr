@@ -9,11 +9,11 @@
             <!-- <form action="#"> -->
             <div class="d-flex align-items-center">
                 <div class="user-img">
-                    <img src="/images/profile.png" alt="userimg"
-                        class="avatar-60 rounded-circle">
+                    <img src="/images/profile.png" alt="userimg" class="avatar-60 rounded-circle">
                 </div>
                 <div class="post-text ml-3 w-100">
-                    <textarea type="text" class="form-control rounded" placeholder="Write something here..." rows="2"
+                    <textarea v-model="newPost.text" type="text" class="form-control rounded"
+                        placeholder="Write something here..." rows="2"
                         style="border:none; line-height: 1.25; min-height: 3em;" name="contentText" id="contentText"
                         required></textarea>
                 </div>
@@ -26,28 +26,11 @@
                     </li>
                 </a>
                 <li>
-                    <button type="submit" id="createPost" class="btn btn-primary d-block">Post</button>
+                    <button type="submit" id="createPost" class="btn btn-primary d-block"
+                        @click="createPost()">Post</button>
                 </li>
             </ul>
             <!-- </form> -->
         </div>
     </div>
 </div>
-
-<script>
-    document.getElementById("createPost").addEventListener('click', () => {
-        fetch('/api/posts', {
-            method: 'POST',
-            body: JSON.stringify({
-                contentText: document.getElementById('contentText').value
-            }),
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        }).then(response => {
-            console.log("Post Created Successfully!")
-            console.log(response)
-            document.getElementById('contentText').value = null;
-        })
-    })
-</script>
