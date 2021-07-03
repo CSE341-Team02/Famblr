@@ -8,7 +8,7 @@ const requiresJWT = require("../../middlewares/requiresJWT")
 const usersController = require("../../controllers/api/users");
 
 // Get Current User
-router.get("/", requiresJWT, usersController.getCurrentUser);
+router.get("/current", requiresJWT, usersController.getCurrentUser);
 
 // Get User By Id
 router.get("/:userId", usersController.getUserById)
