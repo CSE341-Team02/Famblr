@@ -133,6 +133,8 @@ exports.deletePost = async (req, res, next) => {
     // Save Changes to MongoDB
     await post.delete();
 
+    return res.json({message: "Post Deleted"})
+
   } catch (error) {
     // Return error if one is thrown
     return res.status(error.statusCode || 400).json({ error: error.message });
