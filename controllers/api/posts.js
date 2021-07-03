@@ -107,10 +107,9 @@ exports.editPost = async (req, res, next) => {
   }
 };
 
-// TODO
 // Delete Post
 exports.deletePost = async (req, res, next) => {
-  consol.log("deletePost");
+  console.log("deletePost");
   try {
     let postId = req.params.postId;
 

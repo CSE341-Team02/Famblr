@@ -30,7 +30,8 @@
                               <!-- Post Profile Image -->
                               <div class="media-support-user-img mr-3">
                                 <img class="rounded-circle img-fluid"
-                                  v-bind:src="post.userId.profilePicture ? '/uploads/' + post.userId.profilePicture : '/images/profile.png'" alt="">
+                                  v-bind:src="post.userId.profilePicture ? '/uploads/' + post.userId.profilePicture : '/images/profile.png'"
+                                  alt="">
                               </div>
 
                               <!-- Post Name and Date -->
@@ -88,7 +89,7 @@
                             <!-- Comments -->
 
                             <%- include('partials/create-comment.ejs') %>
-                              
+
                           </div>
 
                         </div>
@@ -146,16 +147,19 @@
                 methods: {
                   createComment: async function (postId) {
                     return await axios.post('/api/comments', {
-                            relatedPost: postId,
-                            content: document.getElementById(postId).value
+                      relatedPost: postId,
+                      content: document.getElementById(postId).value
                     }).then(response => {
-                        console.log("Comment Created Successfully!")
-                        console.log(response)
-                        document.getElementById(postId).value = null;
+                      console.log("Comment Created Successfully!")
+                      console.log(response)
+                      document.getElementById(postId).value = null;
                     })
                   },
                   loadPosts: async function () {
-                    if (this.offset > this.totalItems) return;
+                    if (this.offset > this.totalItems) {
+                      this.totalItems = this.posts.length;
+                      return;
+                    }
                     try {
                       this.loading = true;
                       let response = await axios.get(`/api/posts?limit=${this.limit}&offset=${this.offset}`)
