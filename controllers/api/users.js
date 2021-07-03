@@ -2,9 +2,14 @@ const User = require("../../models/user");
 const Image = require("../../models/image");
 
 // Get Current User
-exports.getCurrentUser = (req, res, next) => {
-    const user = req.session.user;
-    return res.json({ user: user });
+exports.getCurrentUser = async (req, res, next) => {
+    try {
+        const userId = req.userId;
+        let user = await User.findById(userId, '-password -__v');
+
+        return res.json({ user });
+
+    } catch (error) { return next(error) }
 };
 
 // Get User By ID
