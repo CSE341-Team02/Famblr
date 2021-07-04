@@ -32,10 +32,13 @@ exports.createComment = async (req, res, next) => {
 // Get All Comments for a post
 // GET /api/comments/post/:postId
 exports.getCommentsForPost = async (req, res, next) => {
-
-  // TODO: Get Comments
-
-  return res.json([]);
+  
+  const relatedPost = req.params.postId;
+  const commentsList = await Comment.find({relatedPost: relatedPost})
+    .populate("userId", "firstName lastName")
+    .exec();
+  console.log(commentsList, "the comments list");
+  return res.json([...commentsList]);
 };
 
 

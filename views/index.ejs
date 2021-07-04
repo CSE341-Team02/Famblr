@@ -162,7 +162,8 @@
 
             await this.getCurrentUser()
 
-            this.loadPosts();
+            await this.loadPosts();
+            await this.loadComments();
 
             //Add watcher to load more posts when window scrolls to bottom of page
             window.onscroll = () => {
@@ -242,6 +243,21 @@
               } finally {
                 this.loading = false;
               }
+            },
+            loadComments: async function () {
+              const self = this;
+              for(let onePost of this.posts) {
+                const response = await axios.get(`/api/comments/post/${onePost._id}`);
+                const commentsList = response.data;
+                onePost.comments = [...onePost.comments, ...commentsList];
+              }
+              
+              console.log(self.posts);
+
+              
+                
+              
+
             },
             deletePost: async function () {
               try {
