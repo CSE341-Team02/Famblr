@@ -121,9 +121,13 @@ exports.deletePost = async (req, res, next) => {
   console.log("deletePost");
   try {
     let postId = req.params.postId;
+    console.log("rrrrrrriiiiiiiiiiiigggggggghhhhhhhhhhhhhtttttttttttttt   hhhhhhhhhheeeeeeeeerrrrrrrrrrrreeeeeeeeee")
 
     // Find post by the postId in the url
     let post = await Post.findById(postId);
+    
+    let comments = post.comments;
+    // console.log(comments[0]);
 
     // Throw 404 if post not found
     if (!post) {
