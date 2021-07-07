@@ -1,3 +1,5 @@
+const {validationResult} = require('express-validator/check');
+
 const Post = require("../../models/post");
 
 // Get All Posts
@@ -28,7 +30,6 @@ exports.getAllPosts = async (req, res, next) => {
     .catch(error => {
       console.log(error);
     });
-
 };
 
 exports.getPostById = (req, res, next) => {
@@ -46,6 +47,15 @@ exports.getPostById = (req, res, next) => {
 // Create Post
 exports.createPost = (req, res, next) => {
   const contentText = req.body.contentText;
+  const errors = validationResult(req);
+
+  if(!errors.isEmpty()) {
+    return res.status(422).render('index', {
+      hasError: true,
+      errorMessage: errors.array()[0].msg,
+      validationErrors: errors.array()
+    });
+  }
 
   const post = new Post({
     text: contentText,
@@ -53,17 +63,16 @@ exports.createPost = (req, res, next) => {
   });
 
   post
-    .save()
-    .then((result) => {
-      console.log("Created Post");
-
-      res.json(result); // Send a response so the frontend know the request finished
-    })
-    .catch((err) => {
-      const error = new Error(err);
-      error.httpStatusCode = 500;
-      return next(error);
-    });
+  .save()
+  .then((result) => {
+    console.log("Created Post");
+    res.json(result); // Send a response so the frontend know the request finished
+  })
+  .catch((err) => {
+    const error = new Error(err);
+    error.httpStatusCode = 500;
+    return next(error);
+  });
 };
 
 // Edit Post
