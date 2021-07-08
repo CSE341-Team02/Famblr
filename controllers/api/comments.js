@@ -1,6 +1,6 @@
 // Comments API Call Logic
 const Comment = require("../../models/comment");
-
+const io = require("../../utils/socket");
 
 // Create Comment
 // POST /api/comments
@@ -15,19 +15,18 @@ exports.createComment = async (req, res, next) => {
   });
 
   // comment.relatedPost.getCommentsForPost(comment._id); //
-  
-  comment
-    .save()
-    .then((result) => {
-      console.log("Created Comment");
+  try {
+    const result = await comment.save();
+    res.json(result); // Send a response so the frontend know the request finished
+    const theComment = await Comment.findById(comment._id).populate("userId", "firstName lastName profilePicture").exec();    
+    io.getIO().emit("new-comment", theComment);
+  } catch (err) {
+    const error = new Error(err);
+    error.httpStatusCode = 500;
+    return next(error);
+  }
 
-      res.json(result); // Send a response so the frontend know the request finished
-    })
-    .catch((err) => {
-      const error = new Error(err);
-      error.httpStatusCode = 500;
-      return next(error);
-    });
+
 };
 
 

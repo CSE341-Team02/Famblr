@@ -1,4 +1,5 @@
-const { validationResult } = require('express-validator/check');
+const {validationResult} = require('express-validator/check');
+const io = require("../../utils/socket");
 
 const Post = require("../../models/post");
 const Image = require("../../models/image");
@@ -66,16 +67,20 @@ exports.createPost = (req, res, next) => {
   });
 
   post
-    .save()
-    .then((result) => {
-      console.log("Created Post");
-      res.json(result); // Send a response so the frontend know the request finished
-    })
-    .catch((err) => {
-      const error = new Error(err);
-      error.httpStatusCode = 500;
-      return next(error);
-    });
+  .save()
+  .then((result) => {
+    console.log("Created Post");
+    res.json(result); // Send a response so the frontend know the request finished
+    return result;
+  })
+  .then(() => {
+    io.getIO().emit("new-post", post);
+  })
+  .catch((err) => {
+    const error = new Error(err);
+    error.httpStatusCode = 500;
+    return next(error);
+  });
 };
 
 // Edit Post
