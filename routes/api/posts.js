@@ -1,4 +1,5 @@
 const router = require("express").Router();
+const { body } = require('express-validator/check');
 
 // Controller
 const postsController = require("../../controllers/api/posts");
@@ -10,7 +11,14 @@ router.get("/", postsController.getAllPosts);
 router.get("/:postId", postsController.getPostById);
 
 // Create Post
-router.post("/", postsController.createPost);
+router.post(
+'/', 
+[
+    body('contentText')
+        .isLength({ min:1, max: 100 })
+], 
+postsController.createPost
+);
 
 // Edit Post
 router.put("/:postId", postsController.editPost);

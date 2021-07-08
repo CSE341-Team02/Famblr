@@ -14,6 +14,8 @@ exports.createComment = async (req, res, next) => {
     userId: req.user,
   });
 
+  // comment.relatedPost.getCommentsForPost(comment._id); //
+  
   comment
     .save()
     .then((result) => {
