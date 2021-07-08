@@ -142,6 +142,8 @@
     <%- include ('partials/js-imports.ejs') %>
 
       <script>
+        var socket = io();
+
         const vueApp = new Vue({
           el: '#vue-app',
           data: {
@@ -156,6 +158,17 @@
               text: "",
               image: null
             }
+          },
+          created: function () {
+            // Initialize Socket Listeners
+            socket.on('new-post', (postData) => {
+              console.log(`New Post: `, postData)
+            });
+
+            socket.on('new-comment', (commentData) => {
+              console.log(`New Comment: `, commentData)
+            });
+
           },
           mounted: async function () {
             axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.famblrToken}`;
@@ -246,17 +259,17 @@
             },
             loadComments: async function () {
               const self = this;
-              for(let onePost of this.posts) {
+              for (let onePost of this.posts) {
                 const response = await axios.get(`/api/comments/post/${onePost._id}`);
                 const commentsList = response.data;
                 onePost.comments = [...onePost.comments, ...commentsList];
               }
-              
+
               console.log(self.posts);
 
-              
-                
-              
+
+
+
 
             },
             deletePost: async function () {

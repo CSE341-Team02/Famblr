@@ -11,6 +11,9 @@ const flash = require("connect-flash");
 
 const User = require("./models/user");
 
+// Import Socket.IO
+const { Server } = require("socket.io");
+
 require("dotenv").config({ path: __dirname + "/.env" });
 const PORT = process.env.PORT || 5000;
 
@@ -91,10 +94,24 @@ mongoose
   .connect(process.env.MONGODB_URI, options)
   .then((result) => {
     console.log(" * Connected to Database: ", result.connections[0].name);
-    app.listen(PORT, () => {
+    const server = app.listen(PORT, () => {
       console.log(` * Listening on http://localhost:${PORT}`);
     });
+
+    // Initialize socket.io
+    const io = new Server(server)
+
+    io.on('connection', (socket) => {
+
+      // On Socket Connection
+      console.log(` * Socket Connected: ${socket.id}`)
+
+      // TODO: 
+      // Handle New Posts/Comments...
+    });
+
   })
   .catch((err) => {
     console.log(err);
   });
+
