@@ -29,6 +29,7 @@ exports.getAllPosts = async (req, res, next) => {
     })
     .catch(error => {
       console.log(error);
+      return next(error);
     });
 };
 
@@ -41,6 +42,7 @@ exports.getPostById = (req, res, next) => {
     })
     .catch(error => {
       console.log(error);
+      return next(error);
     });
 };
 

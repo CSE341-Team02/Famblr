@@ -9,88 +9,121 @@
 </head>
 
 <body>
-    <%- include ('partials/sidebar.ejs') %>
-        <%- include ('partials/top-navbar.ejs') %>
-            <%- include ('partials/right-sidebar.ejs') %>
+    <div id="vue-app">
 
-                <div id="content-page" class="content-page">
-                    <div class="container">
+        <%- include ('partials/sidebar.ejs') %>
+            <%- include ('partials/top-navbar.ejs') %>
+                <%- include ('partials/right-sidebar.ejs') %>
 
-                        <div class="row">
-                            <div class="col-lg-12 row m-0 p-0">
+                    <div id="content-page" class="content-page">
+                        <div class="container">
 
-                                <!-- Account Settings Card -->
-                                <div class="iq-card w-100">
+                            <div class="row">
+                                <div class="col-lg-12 row m-0 p-0">
 
-                                    <div class="iq-card-header d-flex justify-content-between">
-                                        <div class="iq-header-title">
-                                            <h4 class="card-title">Edit Post</h4>
-                                        </div>
-                                    </div>
+                                    <!-- Account Settings Card -->
+                                    <div class="iq-card w-100">
 
-                                    <div class="iq-card-body">
-                                        <div class="d-flex align-items-center">
-                                            <div class="post-text ml-3 w-100">
-                                                <textarea v-model="postText" type="text" class="form-control rounded"
-                                                    rows="2" style="border:none; line-height: 1.25; min-height: 3em;"
-                                                    id="postText" required><%= post.text %></textarea>
+                                        <div class="iq-card-header d-flex justify-content-between">
+                                            <div class="iq-header-title">
+                                                <h4 class="card-title">Edit Post</h4>
                                             </div>
                                         </div>
-                                        <hr>
-                                        <ul
-                                            class="post-opt-block d-flex align-items-center list-inline justify-content-between m-0 p-0">
-                                            <a href="#">
-                                                <li class="iq-bg-primary rounded p-2 pointer mr-3">
-                                                    <img src="/images/small/07.png" alt="icon"
-                                                        class="img-fluid">&nbsp;Add Photo
-                                                </li>
-                                            </a>
-                                            <li>
-                                                <button @click="savePost" id="saveButton"
-                                                    class="btn btn-primary d-block">Save</button>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
 
+                                        <div class="iq-card-body">
+                                            <div class="d-flex align-items-center">
+                                                <div class="post-text ml-3 w-100">
+                                                    <textarea v-model="post.text" type="text"
+                                                        class="form-control rounded" rows="2"
+                                                        style="border:none; line-height: 1.25; min-height: 3em;"
+                                                        id="postText" required><%= post.text %></textarea>
+                                                </div>
+                                            </div>
+                                            <hr>
+                                            <ul
+                                                class="post-opt-block d-flex align-items-center list-inline justify-content-between m-0 p-0">
+                                                <a href="#">
+                                                    <li class="iq-bg-primary rounded p-2 pointer mr-3">
+                                                        <img src="/images/small/07.png" alt="icon"
+                                                            class="img-fluid">&nbsp;Add Photo
+                                                    </li>
+                                                </a>
+                                                <li>
+                                                    <button @click="savePost" id="saveButton"
+                                                        class="btn btn-primary d-block">Save</button>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <%- include ('partials/footer.ejs') %>
-                    <%- include ('partials/js-imports.ejs') %>
+    </div>
 
-                        <script>
-                            const loginApp = new Vue({
-                                el: '.container',
-                                data: {
-                                    postText: `<%= post.text %>`,
-                                },
-                                computed: {
-                                    postId: function () {
-                                        return window.location.pathname.split("/")[2];
-                                    }
-                                },
-                                methods: {
-                                    savePost: async function () {
-                                        console.log("Saving Post...")
-                                        try {
-                                            let response = await axios.put(`/api/posts/${this.postId}`, {
-                                                text: this.postText
-                                            })
+    <%- include ('partials/footer.ejs') %>
+        <%- include ('partials/js-imports.ejs') %>
 
-                                            this.postText = response.data.post.text;
+            <script>
+                const loginApp = new Vue({
+                    el: '#vue-app',
+                    data: {
+                        user: null,
+                        post: null,
+                        errorMessage: null,
+                    },
+                    computed: {
+                        postId: function () {
+                            return window.location.pathname.split("/")[2];
+                        }
+                    },
+                    mounted: async function () {
+                        axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.famblrToken}`;
 
-                                            console.log("Post Successfully Updated")
+                        await this.getCurrentUser()
+                        this.loadPost();
+                    },
+                    methods: {
+                        getCurrentUser: async function () {
+                            try {
+                                let response = await axios.get(`/api/users/current`)
+                                this.user = response.data.user;
 
-                                        } catch (error) {
-                                            console.error(error.response.data.error);
-                                        }
-                                    }
-                                },
-                            })
-                        </script>
+                            } catch (error) {
+                                console.error(error)
+                                window.location.href = '/logout'
+                            }
+                        },
+                        loadPost: async function () {
+                            console.log("Loading Post...")
+                            try {
+                                let response = await axios.get(`/api/posts/${this.postId}`);
+                                this.post = response.data;
+
+                            } catch (error) {
+                                this.errorMessage = error.response.data.error;
+                            }
+                        },
+                        savePost: async function () {
+                            console.log("Saving Post...")
+                            try {
+                                let response = await axios.put(`/api/posts/${this.postId}`, {
+                                    text: this.post.text
+                                })
+
+                                this.post = response.data.post;
+
+                                console.log("Post Successfully Updated")
+
+                            } catch (error) {
+                                console.error(error.response.data.error);
+                            }
+                        }
+                    },
+                })
+            </script>
 
 
 </body>
