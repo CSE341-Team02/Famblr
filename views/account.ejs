@@ -33,7 +33,7 @@
                                                         <div class="col-md-12">
                                                             <div class="profile-img-edit">
                                                                 <img id="profile-pic-preview" class="profile-pic"
-                                                                    v-bind:src="user.profilePictureSrc"
+                                                                    v-bind:src="user ? user.profilePictureSrc : '/images/profile.png'"
                                                                     alt="profile-pic" />
                                                                 <div class="p-image">
                                                                     <i class="ri-pencil-line upload-button"></i>
