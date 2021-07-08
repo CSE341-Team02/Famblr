@@ -99,15 +99,13 @@ mongoose
     });
 
     // Initialize socket.io
-    const io = new Server(server)
+    const io = require("./utils/socket").init(server);
 
     io.on('connection', (socket) => {
 
       // On Socket Connection
       console.log(` * Socket Connected: ${socket.id}`)
 
-      // TODO: 
-      // Handle New Posts/Comments...
     });
 
   })

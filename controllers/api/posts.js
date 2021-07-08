@@ -1,4 +1,5 @@
 const {validationResult} = require('express-validator/check');
+const io = require("../../utils/socket");
 
 const Post = require("../../models/post");
 
@@ -69,6 +70,10 @@ exports.createPost = (req, res, next) => {
   .then((result) => {
     console.log("Created Post");
     res.json(result); // Send a response so the frontend know the request finished
+    return result;
+  })
+  .then(() => {
+    io.getIO().emit("new-post", post);
   })
   .catch((err) => {
     const error = new Error(err);
