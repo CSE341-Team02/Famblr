@@ -9,200 +9,199 @@
 </head>
 
 <body>
-    <%- include ('partials/sidebar.ejs') %>
-        <%- include ('partials/top-navbar.ejs') %>
-            <%- include ('partials/right-sidebar.ejs') %>
+    <div id="vue-app">
+        <%- include ('partials/sidebar.ejs') %>
+            <%- include ('partials/top-navbar.ejs') %>
+                <%- include ('partials/right-sidebar.ejs') %>
 
-                <div id="content-page" class="content-page">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-lg-12 row m-0 p-0">
-                                <!-- Account Settings Card -->
-                                <div class="iq-card w-100">
-                                    <div class="iq-card-header d-flex justify-content-between">
-                                        <div class="iq-header-title">
-                                            <h4 class="card-title">Account Setting</h4>
+                    <div id="content-page" class="content-page">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-lg-12 row m-0 p-0">
+                                    <!-- Account Settings Card -->
+                                    <div class="iq-card w-100">
+                                        <div class="iq-card-header d-flex justify-content-between">
+                                            <div class="iq-header-title">
+                                                <h4 class="card-title">Account Setting</h4>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="iq-card-body">
-                                        <div class="acc-edit">
-                                            <form id="account-form" action="javascript:vueApp.updateUser()">
-                                                <!-- Profile Image -->
-                                                <div class="form-group row align-items-center">
-                                                    <div class="col-md-12">
-                                                        <div class="profile-img-edit">
-                                                            <img id="profile-pic-preview" class="profile-pic"
-                                                                v-bind:src="user.profilePictureSrc" alt="profile-pic" />
-                                                            <div class="p-image">
-                                                                <i class="ri-pencil-line upload-button"></i>
-                                                                <input class="file-upload" type="file" name="image"
-                                                                    accept="image/*" />
+                                        <div class="iq-card-body">
+                                            <div class="acc-edit">
+                                                <form id="account-form" action="javascript:vueApp.updateUser()">
+                                                    <!-- Profile Image -->
+                                                    <div class="form-group row align-items-center">
+                                                        <div class="col-md-12">
+                                                            <div class="profile-img-edit">
+                                                                <img id="profile-pic-preview" class="profile-pic"
+                                                                    v-bind:src="user.profilePictureSrc"
+                                                                    alt="profile-pic" />
+                                                                <div class="p-image">
+                                                                    <i class="ri-pencil-line upload-button"></i>
+                                                                    <input class="file-upload" type="file" name="image"
+                                                                        accept="image/*" />
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div>
 
-                                                <!-- User Data -->
-                                                <div class="row">
-                                                    <div class="col">
-                                                        <div class="form-group">
-                                                            <label for="firstName">First Name</label>
-                                                            <input type="text" name="firstName" id="firstName"
-                                                                class="form-control" v-model="updateForm.firstName"
-                                                                required />
+                                                    <!-- User Data -->
+                                                    <div class="row">
+                                                        <div class="col">
+                                                            <div class="form-group">
+                                                                <label for="firstName">First Name</label>
+                                                                <input type="text" name="firstName" id="firstName"
+                                                                    class="form-control" v-model="updateForm.firstName"
+                                                                    required />
+                                                            </div>
+                                                        </div>
+                                                        <div class="col">
+                                                            <div class="form-group">
+                                                                <label for="lastName">Last Name</label>
+                                                                <input type="text" name="lastName" id="lastName"
+                                                                    class="form-control" v-model="updateForm.lastName"
+                                                                    required />
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                    <div class="col">
-                                                        <div class="form-group">
-                                                            <label for="lastName">Last Name</label>
-                                                            <input type="text" name="lastName" id="lastName"
-                                                                class="form-control" v-model="updateForm.lastName"
-                                                                required />
-                                                        </div>
+
+                                                    <div class="form-group">
+                                                        <label for="username">Username:</label>
+                                                        <input type="text" name="username" class="form-control"
+                                                            id="username" v-model="updateForm.username" required />
                                                     </div>
-                                                </div>
 
-                                                <div class="form-group">
-                                                    <label for="username">Username:</label>
-                                                    <input type="text" name="username" class="form-control"
-                                                        id="username" v-model="updateForm.username" required />
-                                                </div>
+                                                    <div class="form-group">
+                                                        <label for="email">Email:</label>
+                                                        <input type="email" name="email" class="form-control" id="email"
+                                                            v-model="updateForm.email" required />
+                                                    </div>
 
-                                                <div class="form-group">
-                                                    <label for="email">Email:</label>
-                                                    <input type="email" name="email" class="form-control" id="email"
-                                                        v-model="updateForm.email" required />
-                                                </div>
-
-                                                <button type="submit" class="btn btn-primary">
-                                                    Submit
-                                                </button>
-                                                <button @click="resetForm()" type="button" class="btn iq-bg-danger">
-                                                    Cancel
-                                                </button>
-                                            </form>
+                                                    <button type="submit" class="btn btn-primary">
+                                                        Submit
+                                                    </button>
+                                                    <button @click="resetForm()" type="button" class="btn iq-bg-danger">
+                                                        Cancel
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                        <div class="iq-card-footer" v-if="errorMessage">
+                                            <div class="alert alert-danger text-bold ml-3 mr-3" role="alert">
+                                                <strong>
+                                                    {{errorMessage}}
+                                                </strong>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="iq-card-footer" v-if="errorMessage">
-                                        <div class="alert alert-danger text-bold ml-3 mr-3" role="alert">
-                                            <strong>
-                                                {{errorMessage}}
-                                            </strong>
-                                        </div>
-                                    </div>
-                                </div>
 
-                                <!-- Update Password Card -->
-                                <div class="iq-card w-100">
-                                    <div class="iq-card-header d-flex justify-content-between">
-                                        <div class="iq-header-title">
-                                            <h4 class="card-title">Update Password</h4>
+                                    <!-- Update Password Card -->
+                                    <div class="iq-card w-100">
+                                        <div class="iq-card-header d-flex justify-content-between">
+                                            <div class="iq-header-title">
+                                                <h4 class="card-title">Update Password</h4>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="iq-card-body">
-                                        <div class="acc-edit">
-                                            <form>
-                                                <div class="form-group">
-                                                    <label for="oldPassword">Current Password:</label>
-                                                    <input type="password" name="oldPassword" class="form-control"
-                                                        id="oldPassword" required />
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="newPassword">New Password:</label>
-                                                    <input type="password" name="newPassword" class="form-control"
-                                                        id="newPassword" required />
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="newPasswordConfirm">Confirm New Password:</label>
-                                                    <input type="password" name="newPasswordConfirm"
-                                                        class="form-control" id="newPasswordConfirm" required />
-                                                </div>
+                                        <div class="iq-card-body">
+                                            <div class="acc-edit">
+                                                <form>
+                                                    <div class="form-group">
+                                                        <label for="oldPassword">Current Password:</label>
+                                                        <input type="password" name="oldPassword" class="form-control"
+                                                            id="oldPassword" required />
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="newPassword">New Password:</label>
+                                                        <input type="password" name="newPassword" class="form-control"
+                                                            id="newPassword" required />
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="newPasswordConfirm">Confirm New Password:</label>
+                                                        <input type="password" name="newPasswordConfirm"
+                                                            class="form-control" id="newPasswordConfirm" required />
+                                                    </div>
 
-                                                <button type="submit" class="btn btn-primary">
-                                                    Submit
-                                                </button>
-                                                <button type="reset" class="btn iq-bg-danger">
-                                                    Cancel
-                                                </button>
-                                            </form>
+                                                    <button type="submit" class="btn btn-primary">
+                                                        Submit
+                                                    </button>
+                                                    <button type="reset" class="btn iq-bg-danger">
+                                                        Cancel
+                                                    </button>
+                                                </form>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
+    </div>
 
-                <%- include ('partials/footer.ejs') %>
-                    <%- include ('partials/js-imports.ejs') %>
+    <%- include ('partials/footer.ejs') %>
+        <%- include ('partials/js-imports.ejs') %>
 
-                        <script>
-                            const vueApp = new Vue({
-                                el: ".container",
-                                data: {
-                                    jwtData: {},
-                                    user: {},
-                                    updateForm: {
-                                        imageFile: null,
-                                        firstName: "",
-                                        lastName: "",
-                                        username: "",
-                                        email: "",
-                                    },
-                                    errorMessage: null
-                                },
-                                mounted: async function () {
-                                    this.jwtData = jwt_decode(localStorage.famblrToken);
-                                    this.loadUser();
-                                },
-                                methods: {
-                                    loadUser: async function () {
-                                        try {
-                                            let response = await axios.get(
-                                                `/api/users/${this.jwtData.userId}`
-                                            );
-                                            this.user = response.data.user;
-                                            this.user.profilePictureSrc = this.user.profilePicture ? `/uploads/${this.user.profilePicture}` : '/images/profile.png';
-                                            this.resetForm();
-                                        } catch (error) {
-                                            console.error(error);
-                                        }
-                                    },
-                                    updateUser: async function () {
-                                        console.log("Updating User...");
-                                        try {
-                                            const form = document.getElementById("account-form")
-                                            const formData = new FormData(form)
+            <script>
+                const vueApp = new Vue({
+                    el: '#vue-app',
+                    data: {
+                        user: null,
+                        updateForm: {
+                            imageFile: null,
+                            firstName: "",
+                            lastName: "",
+                            username: "",
+                            email: "",
+                        },
+                        errorMessage: null
+                    },
+                    mounted: async function () {
+                        axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.famblrToken}`;
+                        await this.getCurrentUser();
 
-                                            let response = await axios.put(`/api/users/${this.user._id}`, formData, {
-                                                headers: {
-                                                    'Content-Type': 'multipart/form-data'
-                                                }
-                                            })
+                    },
+                    methods: {
+                        getCurrentUser: async function () {
+                            try {
+                                let response = await axios.get(`/api/users/current`)
+                                this.user = response.data.user;
+                                this.user.profilePictureSrc = this.user.profilePicture ? `/uploads/${this.user.profilePicture}` : '/images/profile.png';
+                                
+                                this.resetForm();
+                            } catch (error) {
+                                console.error(error)
+                                window.location.href = '/logout'
+                            }
+                        },
+                        updateUser: async function () {
+                            console.log("Updating User...");
+                            try {
+                                const form = document.getElementById("account-form")
+                                const formData = new FormData(form)
 
-                                            await this.loadUser();
-                                        } catch (error) {
-                                            console.error(error)
-                                            // this.errorMessage = error.response.data.error;
-                                            // console.error(this.errorMessage)
-                                        }
+                                let response = await axios.put(`/api/users/${this.user._id}`, formData, {
+                                    headers: {
+                                        'Content-Type': 'multipart/form-data'
+                                    }
+                                })
 
-                                    },
-                                    resetForm: function () {
-                                        console.log("Resetting Form...")
-                                        this.errorMessage = null;
+                                await this.getCurrentUser();
+                            } catch (error) {
+                                this.errorMessage = error.response.data.error;
+                            }
 
-                                        this.updateForm.imageFile = null;
-                                        this.updateForm.firstName = this.user.firstName;
-                                        this.updateForm.lastName = this.user.lastName;
-                                        this.updateForm.username = this.user.username;
-                                        this.updateForm.email = this.user.email;
+                        },
+                        resetForm: function () {
+                            console.log("Resetting Form...")
+                            this.errorMessage = null;
 
-                                        // $("#profile-pic-preview").attr("src", this.user.profilePictureSrc)
-                                    },
-                                },
-                            });
-                        </script>
+                            this.updateForm.imageFile = null;
+                            this.updateForm.firstName = this.user.firstName;
+                            this.updateForm.lastName = this.user.lastName;
+                            this.updateForm.username = this.user.username;
+                            this.updateForm.email = this.user.email;
+                        },
+                    },
+                });
+            </script>
 </body>
 
 </html>
