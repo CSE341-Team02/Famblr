@@ -1,4 +1,5 @@
 const router = require("express").Router();
+var multer = require('multer');
 const { body } = require('express-validator/check');
 
 // Controller
@@ -12,16 +13,20 @@ router.get("/:postId", postsController.getPostById);
 
 // Create Post
 router.post(
-'/', 
-[
-    body('contentText')
-        .isLength({ min:1, max: 100 })
-], 
-postsController.createPost
+    '/',
+    [
+        body('contentText')
+            .isLength({ min: 1, max: 100 })
+    ],
+    postsController.createPost
 );
 
 // Edit Post
-router.put("/:postId", postsController.editPost);
+router.put(
+    "/:postId",
+    multer().single('image'),
+    postsController.editPost
+);
 
 // Delete Post
 router.delete("/:postId", postsController.deletePost);

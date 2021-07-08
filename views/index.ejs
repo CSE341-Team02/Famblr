@@ -87,7 +87,7 @@
 
                           <!-- Post Image -->
                           <div v-if="post.image" class="user-post">
-                            <a><img v-bind:src="post.image" alt="post-image" class="img-fluid rounded w-100"></a>
+                            <a><img v-bind:src="`/uploads/${post.image}`" alt="post-image" class="img-fluid rounded w-100"></a>
                           </div>
 
                           <div class="comment-area mt-3">

@@ -1,6 +1,7 @@
-const {validationResult} = require('express-validator/check');
+const { validationResult } = require('express-validator/check');
 
 const Post = require("../../models/post");
+const Image = require("../../models/image");
 
 // Get All Posts
 exports.getAllPosts = async (req, res, next) => {
@@ -51,7 +52,7 @@ exports.createPost = (req, res, next) => {
   const contentText = req.body.contentText;
   const errors = validationResult(req);
 
-  if(!errors.isEmpty()) {
+  if (!errors.isEmpty()) {
     return res.status(422).render('index', {
       hasError: true,
       errorMessage: errors.array()[0].msg,
@@ -65,16 +66,16 @@ exports.createPost = (req, res, next) => {
   });
 
   post
-  .save()
-  .then((result) => {
-    console.log("Created Post");
-    res.json(result); // Send a response so the frontend know the request finished
-  })
-  .catch((err) => {
-    const error = new Error(err);
-    error.httpStatusCode = 500;
-    return next(error);
-  });
+    .save()
+    .then((result) => {
+      console.log("Created Post");
+      res.json(result); // Send a response so the frontend know the request finished
+    })
+    .catch((err) => {
+      const error = new Error(err);
+      error.httpStatusCode = 500;
+      return next(error);
+    });
 };
 
 // Edit Post
@@ -103,6 +104,17 @@ exports.editPost = async (req, res, next) => {
       throw error;
     }
 
+    // Delete Image if marked for deletion
+    if (req.body.deleteImage === 'true') {
+      post.image = null;
+    }
+    // Save image if one provided
+    else if (req.file) {
+      const image = new Image({ ...req.file });
+      await image.save();
+      post.image = image;
+    }
+
     // Set the new post text
     post.text = newText;
 
@@ -127,7 +139,7 @@ exports.deletePost = async (req, res, next) => {
 
     // Find post by the postId in the url
     let post = await Post.findById(postId);
-    
+
     let comments = post.comments;
     // console.log(comments[0]);
 
@@ -148,7 +160,7 @@ exports.deletePost = async (req, res, next) => {
     // Save Changes to MongoDB
     await post.delete();
 
-    return res.json({message: "Post Deleted"})
+    return res.json({ message: "Post Deleted" })
 
   } catch (error) {
     // Return error if one is thrown

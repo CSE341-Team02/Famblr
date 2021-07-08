@@ -12,7 +12,8 @@ const postSchema = new Schema({
         required: false
     },
     image: {
-        type: Buffer,
+        type: Schema.Types.ObjectId,
+        ref: 'Image',
         required: false
     },
     comments: {

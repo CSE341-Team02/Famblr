@@ -32,22 +32,43 @@
 
                                         <div class="iq-card-body">
                                             <div class="d-flex align-items-center">
-                                                <div class="post-text ml-3 w-100">
-                                                    <textarea v-model="post.text" type="text"
+                                                <div class="post-text ml-1 mr-1 w-100">
+                                                    <textarea v-model="updateForm.text" type="text"
                                                         class="form-control rounded" rows="2"
                                                         style="border:none; line-height: 1.25; min-height: 3em;"
                                                         id="postText" required></textarea>
+
+                                                    <template v-if="updateForm.preview">
+                                                        <hr>
+
+                                                        <div>
+                                                            <img :src="updateForm.preview" class="img-fluid" />
+                                                            <button @click="removeImage"
+                                                                class="btn btn-danger btn-block"
+                                                                style="border-top-left-radius: 0; border-top-right-radius: 0;">
+                                                                <i class="ri-delete-bin-fill"></i>
+                                                            </button>
+                                                        </div>
+
+                                                    </template>
                                                 </div>
+
                                             </div>
                                             <hr>
-                                            <ul
-                                                class="post-opt-block d-flex align-items-center list-inline justify-content-between m-0 p-0">
-                                                <a href="#">
+                                            <ul class="post-opt-block d-flex align-items-center list-inline m-0 p-0">
+                                                <a href="javascript:$('#imageInput').click()">
                                                     <li class="iq-bg-primary rounded p-2 pointer mr-3">
                                                         <img src="/images/small/07.png" alt="icon"
                                                             class="img-fluid">&nbsp;Add Photo
+
+                                                        <input id="imageInput" type="file" accept="image/*"
+                                                            @change="previewImage" style="display: none;">
                                                     </li>
                                                 </a>
+                                                <li class="ml-auto mr-2">
+                                                    <button @click="resetForm" id="cancelButton"
+                                                        class="btn btn-outline-secondary">Cancel</button>
+                                                </li>
                                                 <li>
                                                     <button @click="savePost" id="saveButton"
                                                         class="btn btn-primary d-block">Save</button>
@@ -55,7 +76,6 @@
                                             </ul>
                                         </div>
                                     </div>
-
                                 </div>
                             </div>
                         </div>
@@ -67,12 +87,18 @@
         <%- include ('partials/js-imports.ejs') %>
 
             <script>
-                const loginApp = new Vue({
+                const vueApp = new Vue({
                     el: '#vue-app',
                     data: {
                         user: null,
-                        post: null,
                         errorMessage: null,
+                        post: null,
+                        updateForm: {
+                            text: '',
+                            image: null,
+                            preview: null,
+                            deleteImage: false
+                        }
                     },
                     computed: {
                         postId: function () {
@@ -101,6 +127,11 @@
                             try {
                                 let response = await axios.get(`/api/posts/${this.postId}`);
                                 this.post = response.data;
+                                this.updateForm.text = this.post.text;
+
+                                if (this.post.image) {
+                                    this.updateForm.preview = `/uploads/${this.post.image}`
+                                }
 
                             } catch (error) {
                                 this.errorMessage = error.response.data.error;
@@ -109,9 +140,18 @@
                         savePost: async function () {
                             console.log("Saving Post...")
                             try {
-                                let response = await axios.put(`/api/posts/${this.postId}`, {
-                                    text: this.post.text
-                                })
+                                let formData = new FormData();
+                                formData.append('text', this.updateForm.text);
+                                formData.append('image', this.updateForm.image);
+                                formData.append('deleteImage', this.updateForm.deleteImage);
+
+                                let response = await axios.put(`/api/posts/${this.postId}`,
+                                    formData,
+                                    {
+                                        headers: {
+                                            'Content-Type': 'multipart/form-data'
+                                        }
+                                    })
 
                                 this.post = response.data.post;
 
@@ -119,8 +159,38 @@
 
                             } catch (error) {
                                 console.error(error.response.data.error);
+                                this.errorMessage = error.response.data.error;
                             }
-                        }
+                        },
+                        previewImage: function (event) {
+                            let input = event.target;
+                            if (input.files) {
+                                let reader = new FileReader();
+                                reader.onload = (e) => {
+                                    this.updateForm.preview = e.target.result;
+                                }
+                                this.updateForm.image = input.files[0];
+                                reader.readAsDataURL(input.files[0]);
+                                this.updateForm.deleteImage = false;
+                            }
+                        },
+                        removeImage: function () {
+                            console.log("removeImage...")
+                            let input = document.getElementById("imageInput")
+                            input.value = null;
+                            this.updateForm.preview = null;
+                            this.updateForm.image = null;
+                            this.updateForm.deleteImage = true;
+                        },
+                        resetForm: function () {
+                            console.log("Resetting Form...")
+                            this.errorMessage = null;
+
+                            this.updateForm.text = this.post.text;
+                            this.updateForm.image = null;
+                            this.updateForm.preview = this.post.image ? `/uploads/${this.post.image}` : null;
+                            this.updateForm.deleteImage = false;
+                        },
                     },
                 })
             </script>
