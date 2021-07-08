@@ -16,7 +16,7 @@
             <div id="app" class="container">
               <div class="row">
                 <div class="col-lg-8 row m-0 p-0">
-              
+
                   <!-- Import the create post form -->
                   <%- include ('partials/create-post.ejs') %>
 
@@ -87,7 +87,8 @@
 
                           <!-- Post Image -->
                           <div v-if="post.image" class="user-post">
-                            <a><img v-bind:src="`/uploads/${post.image}`" alt="post-image" class="img-fluid rounded w-100"></a>
+                            <a><img v-bind:src="`/uploads/${post.image}`" alt="post-image"
+                                class="img-fluid rounded w-100"></a>
                           </div>
 
                           <div class="comment-area mt-3">
@@ -163,6 +164,11 @@
             // Initialize Socket Listeners
             socket.on('new-post', (postData) => {
               console.log(`New Post: `, postData)
+
+              // add post from socket IF not already in list
+              if (!this.posts.some(post => post._id === postData._id)) {
+                this.posts = [postData, ...this.posts]
+              }
             });
 
             socket.on('new-comment', (commentData) => {
