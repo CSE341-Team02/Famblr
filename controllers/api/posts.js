@@ -54,13 +54,10 @@ exports.createPost = (req, res, next) => {
   const errors = validationResult(req);
 
   if (!errors.isEmpty()) {
-    return res.status(422).render('index', {
-      hasError: true,
-      errorMessage: errors.array()[0].msg,
-      validationErrors: errors.array()
-    });
+    let error =  new Error("Post cannot be empty and must be less than 100 characters!");
+    return next(error);
   }
-
+  
   const post = new Post({
     text: contentText,
     userId: req.user
@@ -88,9 +85,14 @@ exports.editPost = async (req, res, next) => {
   try {
     let postId = req.params.postId;
     let newText = req.body.text;
+    const errors = validationResult(req);
 
-    // Throw error if no text provided
-    if (!newText) throw new Error("Missing text");
+    console.log(errors);
+
+    if (!errors.isEmpty()) {
+      let error =  new Error("Post cannot be empty and must be less than 100 characters!");
+      return next(error);
+    }
 
     // Find post by the postId in the url
     let post = await Post.findById(postId);

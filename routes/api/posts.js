@@ -25,6 +25,10 @@ router.post(
 router.put(
     "/:postId",
     multer().single('image'),
+    [
+        body('text')
+            .isLength({ min: 1, max: 100 })
+    ],
     postsController.editPost
 );
 

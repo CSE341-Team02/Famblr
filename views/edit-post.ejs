@@ -30,13 +30,22 @@
                                             </div>
                                         </div>
 
+                                        <!-- Error Message -->
+                                        <div class="iq-card-footer" v-if="errorMessage">
+                                            <div class="alert alert-danger text-bold ml-3 mr-3" role="alert">
+                                                <strong>
+                                                    {{errorMessage}}
+                                                </strong>
+                                            </div>
+                                        </div>
+
                                         <div class="iq-card-body">
                                             <div class="d-flex align-items-center">
                                                 <div class="post-text ml-1 mr-1 w-100">
                                                     <textarea v-model="updateForm.text" type="text"
                                                         class="form-control rounded" rows="2"
                                                         style="border:none; line-height: 1.25; min-height: 3em;"
-                                                        id="postText" required></textarea>
+                                                        name="text" id="postText" required></textarea>
 
                                                     <template v-if="updateForm.preview">
                                                         <hr>
@@ -98,7 +107,8 @@
                             image: null,
                             preview: null,
                             deleteImage: false
-                        }
+                        },
+                        errorMessage: null
                     },
                     computed: {
                         postId: function () {
@@ -140,6 +150,7 @@
                         savePost: async function () {
                             console.log("Saving Post...")
                             try {
+                                this.errorMessage = null;
                                 let formData = new FormData();
                                 formData.append('text', this.updateForm.text);
                                 formData.append('image', this.updateForm.image);
