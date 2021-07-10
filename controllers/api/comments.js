@@ -35,7 +35,7 @@ exports.getCommentsForPost = async (req, res, next) => {
   
   const relatedPost = req.params.postId;
   const commentsList = await Comment.find({relatedPost: relatedPost})
-    .populate("userId", "firstName lastName")
+    .populate("userId", "firstName lastName profilePicture")
     .exec();
   // console.log(commentsList, "the comments list");
   return res.json([...commentsList]);

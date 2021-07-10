@@ -180,8 +180,10 @@
               }
             });
 
-            socket.on('new-comment', (commentData) => {
-              // console.log(`New Comment: `, commentData)
+            socket.on('new-comment', (comment) => {
+              let post = vueApp.posts.find(post => post._id == comment.relatedPost)
+
+              post.comments.push(comment)
             });
 
           },
