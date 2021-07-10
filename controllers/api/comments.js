@@ -1,12 +1,19 @@
 // Comments API Call Logic
 const Comment = require("../../models/comment");
 const io = require("../../utils/socket");
+const { validationResult } = require('express-validator/check');
 
 // Create Comment
 // POST /api/comments
 exports.createComment = async (req, res, next) => {
   const commentText = req.body.content;
   const relatedPost = req.body.relatedPost;
+  const errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    let error = new Error("Comments cannot be empty and must be less than 100 characters!");
+    return next(error);
+  }
 
   const comment = new Comment({
     relatedPost: relatedPost,
@@ -48,9 +55,12 @@ exports.editComment = async (req, res, next) => {
   try {
     let commentId = req.params.commentId;
     let newContent = req.body.content;
+    const errors = validationResult(req);
 
-    // Throw error if no text provided
-    if (!newContent) throw new Error("Missing content");
+    if (!errors.isEmpty()) {
+      let error = new Error("Comments cannot be empty and must be less than 100 characters!");
+      return next(error);
+    }
 
     // Find Comment by the commentId in the url
     let comment = await Comment.findById(commentId);

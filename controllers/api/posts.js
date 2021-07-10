@@ -53,8 +53,6 @@ exports.createPost = async (req, res, next) => {
   const text = req.body.text;
   const errors = validationResult(req);
 
-  console.log(errors)
-
   if (!errors.isEmpty()) {
     let error = new Error("Post cannot be empty and must be less than 100 characters!");
     return next(error);
