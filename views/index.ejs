@@ -18,11 +18,11 @@
                 <div class="col-lg-8 row m-0 p-0">
 
                   <div class="iq-card-footer" v-if="errorMessage">
-                      <div class="alert alert-danger text-bold ml-3 mr-3" role="alert">
-                          <strong>
-                              {{errorMessage}}
-                          </strong>
-                      </div>
+                    <div class="alert alert-danger text-bold ml-3 mr-3" role="alert">
+                      <strong>
+                        {{errorMessage}}
+                      </strong>
+                    </div>
                   </div>
 
                   <!-- Import the create post form -->
@@ -191,7 +191,6 @@
             await this.getCurrentUser()
 
             await this.loadPosts();
-            await this.loadComments();
 
             //Add watcher to load more posts when window scrolls to bottom of page
             window.onscroll = () => {
@@ -227,10 +226,13 @@
                 let response = await axios.post(`/api/posts`, {
                   contentText: this.newPost.text
                 });
-                // console.log("Post created successfully")
 
-                // Add new post to list of posts
-                this.posts = [{ ...response.data }, ...this.posts]
+                let postData = response.data;
+
+                // Add new post to list of posts if not there from socket
+                if (!this.posts.some(post => post._id === postData._id)) {
+                  this.posts = [postData, ...this.posts]
+                }
 
                 // Reset New Post Input
                 this.newPost.text = "";
@@ -260,9 +262,13 @@
                 this.loading = true;
                 let response = await axios.get(`/api/posts?limit=${this.limit}&offset=${this.offset}`)
 
+                let loadedPosts = response.data.allPosts;
+
+                this.loadComments(loadedPosts)
+
                 this.posts = [
                   ...this.posts,
-                  ...response.data.allPosts
+                  ...loadedPosts
                 ];
                 this.totalItems = response.data.totalItems;
 
@@ -275,20 +281,13 @@
                 this.loading = false;
               }
             },
-            loadComments: async function () {
+            loadComments: async function (posts) {
               const self = this;
-              for (let onePost of this.posts) {
+              for (let onePost of posts) {
                 const response = await axios.get(`/api/comments/post/${onePost._id}`);
                 const commentsList = response.data;
                 onePost.comments = [...onePost.comments, ...commentsList];
               }
-
-              // console.log(self.posts);
-
-
-
-
-
             },
             deletePost: async function () {
               try {

@@ -17,7 +17,7 @@ exports.createComment = async (req, res, next) => {
   try {
     await comment.save();
     
-    io.getIO().emit("new-comment", theComment);
+    io.getIO().emit("new-comment", comment);
     console.log(` * (Socket) : "new-comment" { commentId: ${comment._id} }`)
     
     return res.json(comment);

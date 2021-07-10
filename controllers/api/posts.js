@@ -66,13 +66,11 @@ exports.createPost = (req, res, next) => {
   post
   .save()
   .then((result) => {
-    // console.log("Created Post");
-    res.json(result); // Send a response so the frontend know the request finished
-    return result;
-  })
-  .then(() => {
+
     io.getIO().emit("new-post", post);
     console.log(` * (Socket) : "new-post" { postId: ${post._id} }`)
+    
+    return res.json(result);
   })
   .catch((err) => {
     const error = new Error(err);
@@ -87,8 +85,6 @@ exports.editPost = async (req, res, next) => {
     let postId = req.params.postId;
     let newText = req.body.text;
     const errors = validationResult(req);
-
-    console.error(errors);
 
     if (!errors.isEmpty()) {
       let error =  new Error("Post cannot be empty and must be less than 100 characters!");
