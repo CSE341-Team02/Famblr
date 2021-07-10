@@ -9,7 +9,8 @@
             <!-- <form action="#"> -->
             <div class="d-flex align-items-center">
                 <div class="user-img">
-                    <img src="/images/profile.png" alt="userimg" class="avatar-60 rounded-circle">
+                    <img v-bind:src="user.profilePicture ? '/uploads/' + user.profilePicture : '/images/profile.png'"
+                        alt="userimg" class="avatar-60 rounded-circle">
                 </div>
                 <div class="post-text ml-3 w-100">
                     <textarea v-model="newPost.text" type="text" class="form-control rounded"
