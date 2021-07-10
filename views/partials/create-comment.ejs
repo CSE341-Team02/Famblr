@@ -8,19 +8,33 @@
                     alt="userimg" class="avatar-35 rounded-circle img-fluid">
             </div>
 
-            <div class="comment-data-block ml-3">
+            <div class="comment-data-block ml-3 flex-grow-1">
                 <h6>{{comment.userId.firstName}} {{comment.userId.lastName}}</h6>
-                <p class="mb-0">{{comment.content}}</p>
+                <p v-if="!comment.editing" class="mb-0">{{comment.content}}</p>
+
+                <div v-else class="comment-text d-flex align-items-center" style="position: relative;">
+                    <input type="text" v-model="comment.editedContent" class="form-control rounded"
+                        placeholder="Reply..." style="padding-right: 130px;">
+                    <div class="comment-attagement d-flex">
+                        <button type="submit" id="createComment" class="btn btn-light d-block mr-1"
+                            v-on:click="closeCommentEditor(comment)">Cancel</button>
+
+                        <button type="submit" id="createComment" class="btn btn-primary d-block mr-1"
+                            v-on:click="updateComment(comment)">Save</button>
+                    </div>
+                </div>
+
             </div>
 
-            <div v-if="comment.userId._id == user._id" class="iq-card-header-toolbar d-flex align-items-center ml-auto">
+            <div v-if="comment.userId._id == user._id" class="iq-card-header-toolbar d-flex align-items-center">
                 <div class="dropdown">
                     <span class="dropdown-toggle" data-toggle="dropdown">
                         <i class="ri-more-fill btn"></i>
                     </span>
                     <div class="dropdown-menu dropdown-menu-right">
-                        <!-- <a class="dropdown-item" href="#"><i class="ri-pencil-fill mr-2"></i>Edit</a> -->
-                        <a class="dropdown-item" type="button" data-toggle="modal" data-target="#deleteCommentModal"
+                        <a class="dropdown-item btn" @click="openCommentEditor(post, comment)"><i
+                                class="ri-pencil-fill mr-2"></i>Edit</a>
+                        <a class="dropdown-item btn" data-toggle="modal" data-target="#deleteCommentModal"
                             @click="commentToDelete = comment"><i class="ri-delete-bin-6-fill mr-2"></i>Delete</a>
                     </div>
                 </div>
