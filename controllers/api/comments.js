@@ -94,8 +94,9 @@ exports.deleteComment = async (req, res, next) => {
   let commentId = req.params.commentId;
   let comment = await Comment.findById(commentId);
 
-  // TODO: Delete Comment
+  // TODO: Validation
 
+  await comment.delete();
 
   // Broadcast event to sockets
   io.getIO().emit("delete-comment", comment);

@@ -1,15 +1,33 @@
 <ul class="post-comments p-0 m-0">
     <li v-for="comment in post.comments" class="mb-2">
+
         <div class="d-flex flex-wrap">
+
             <div class="user-img">
                 <img v-bind:src="comment.userId.profilePicture ? '/uploads/' + comment.userId.profilePicture : '/images/profile.png'"
                     alt="userimg" class="avatar-35 rounded-circle img-fluid">
             </div>
+
             <div class="comment-data-block ml-3">
                 <h6>{{comment.userId.firstName}} {{comment.userId.lastName}}</h6>
                 <p class="mb-0">{{comment.content}}</p>
             </div>
+
+            <div v-if="comment.userId._id == user._id" class="iq-card-header-toolbar d-flex align-items-center ml-auto">
+                <div class="dropdown">
+                    <span class="dropdown-toggle" data-toggle="dropdown">
+                        <i class="ri-more-fill btn"></i>
+                    </span>
+                    <div class="dropdown-menu dropdown-menu-right">
+                        <!-- <a class="dropdown-item" href="#"><i class="ri-pencil-fill mr-2"></i>Edit</a> -->
+                        <a class="dropdown-item" type="button" data-toggle="modal" data-target="#deleteCommentModal"
+                            @click="commentToDelete = comment"><i class="ri-delete-bin-6-fill mr-2"></i>Delete</a>
+                    </div>
+                </div>
+            </div>
+
         </div>
+
     </li>
 </ul>
 
