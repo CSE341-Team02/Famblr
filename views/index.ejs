@@ -437,6 +437,8 @@
             },
             updateComment: async function (comment) {
               try {
+                this.errorMessage = null;
+
                 let response = await axios.put(`/api/comments/${comment._id}`, {
                   content: comment.editedContent
                 })
@@ -446,6 +448,7 @@
 
               } catch (error) {
                 console.error(error)
+                this.errorMessage = error.response.data.error;
               }
 
             }
