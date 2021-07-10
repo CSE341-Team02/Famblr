@@ -36,7 +36,7 @@ exports.login = async (req, res, next) => {
         profilePicture: user.profilePicture,
         userId: user._id.toString(),
       },
-      "somesupersecretsecret",
+      process.env.JWT_SECRET_KEY,
       { expiresIn: "1d" }
     );
 
