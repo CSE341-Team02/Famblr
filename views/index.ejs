@@ -183,7 +183,9 @@
             socket.on('new-comment', (comment) => {
               let post = vueApp.posts.find(post => post._id == comment.relatedPost)
 
-              post.comments.push(comment)
+              if(post){
+                post.comments.push(comment)
+              }
             });
 
           },
