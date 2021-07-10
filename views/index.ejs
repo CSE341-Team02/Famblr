@@ -171,23 +171,56 @@
             errorMessage: null
           },
           created: function () {
-            // Initialize Socket Listeners
             socket.on('new-post', (postData) => {
-              // console.log(`New Post: `, postData)
-
-              // add post from socket IF not already in list
               if (!this.posts.some(post => post._id === postData._id)) {
                 this.posts = [postData, ...this.posts]
               }
             });
 
-            socket.on('new-comment', (comment) => {
-              let post = vueApp.posts.find(post => post._id == comment.relatedPost)
+            socket.on('update-post', (updatedPost) => {
+              let post = this.posts.find(post => post._id == updatedPost._id)
 
+              if (post) {
+                post.text = updatedPost.text;
+                post.image = updatedPost.image;
+              }
+            });
+
+            socket.on('delete-post', (deletedPost) => {
+              this.posts = this.posts.filter(post => {
+                return post._id != deletedPost._id
+              })
+            })
+
+
+            socket.on('new-comment', (comment) => {
+              let post = this.posts.find(post => post._id == comment.relatedPost)
               if (post) {
                 post.comments.push(comment)
               }
             });
+
+            socket.on('update-comment', (updatedComment) => {
+              let post = this.posts.find(post => post._id == updatedComment.relatedPost)
+              if (post) {
+
+                let comment = post.comments.find(comment => comment._id = updatedComment._id)
+                if (comment) {
+                  comment.content = updatedComment.content;
+                } else {
+                  post.comments.push(updatedComment)
+                }
+              }
+            });
+
+            socket.on('delete-comment', (deletedComment) => {
+              let post = this.posts.find(post => post._id == deletedComment.relatedPost)
+              if (post) {
+                post.comments = post.comments.filter(comment => {
+                  return comment._id != deletedComment._id;
+                })
+              }
+            })
 
           },
           mounted: async function () {

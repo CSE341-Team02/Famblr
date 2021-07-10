@@ -125,7 +125,7 @@ exports.editPost = async (req, res, next) => {
     else if (req.file) {
       const image = new Image({ ...req.file });
       await image.save();
-      post.image = image;
+      post.image = image._id;
     }
 
     // Set the new post text
@@ -133,6 +133,10 @@ exports.editPost = async (req, res, next) => {
 
     // Save Changes to MongoDB
     await post.save();
+
+    // Broadcast event to sockets
+    io.getIO().emit("update-post", post);
+    console.log(` * (Socket) : "update-post" { postId: ${post._id} }`)
 
     // Return Updated Post
     res.json({ post });
@@ -172,6 +176,10 @@ exports.deletePost = async (req, res, next) => {
 
     // Save Changes to MongoDB
     await post.delete();
+
+    // Broadcast event to sockets
+    io.getIO().emit("delete-post", post);
+    console.log(` * (Socket) : "delete-post" { postId: ${postId} }`)
 
     return res.json({ message: "Post Deleted" })
 

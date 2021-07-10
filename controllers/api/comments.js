@@ -16,10 +16,10 @@ exports.createComment = async (req, res, next) => {
 
   try {
     await comment.save();
-    
+
     io.getIO().emit("new-comment", comment);
     console.log(` * (Socket) : "new-comment" { commentId: ${comment._id} }`)
-    
+
     return res.json(comment);
   } catch (err) {
     const error = new Error(err);
@@ -32,9 +32,9 @@ exports.createComment = async (req, res, next) => {
 // Get All Comments for a post
 // GET /api/comments/post/:postId
 exports.getCommentsForPost = async (req, res, next) => {
-  
+
   const relatedPost = req.params.postId;
-  const commentsList = await Comment.find({relatedPost: relatedPost})
+  const commentsList = await Comment.find({ relatedPost: relatedPost })
     .populate("userId", "firstName lastName profilePicture")
     .exec();
   // console.log(commentsList, "the comments list");
@@ -76,6 +76,10 @@ exports.editComment = async (req, res, next) => {
     // Save Changes to MongoDB
     await comment.save();
 
+    // Broadcast event to sockets
+    io.getIO().emit("update-comment", comment);
+    console.log(` * (Socket) : "update-comment" { commentId: ${comment._id} }`)
+
     // Return Updated Post
     return res.json({ comment });
   } catch (error) {
@@ -87,8 +91,15 @@ exports.editComment = async (req, res, next) => {
 // Delete Comment
 // DELETE /api/comments/:commentId
 exports.deleteComment = async (req, res, next) => {
+  let commentId = req.params.commentId;
+  let comment = await Comment.findById(commentId);
 
   // TODO: Delete Comment
+
+
+  // Broadcast event to sockets
+  io.getIO().emit("delete-comment", comment);
+  console.log(` * (Socket) : "delete-comment" { commentId: ${commentId} }`)
 
   return res.json({});
 };
