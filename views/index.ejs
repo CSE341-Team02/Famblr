@@ -364,6 +364,12 @@
               for (let onePost of posts) {
                 const response = await axios.get(`/api/comments/post/${onePost._id}`);
                 const commentsList = response.data;
+
+                commentsList.forEach(comment => {
+                  comment.editing = false
+                  comment.editedContent = comment.content
+                });
+
                 onePost.comments = [...onePost.comments, ...commentsList];
               }
             },
@@ -422,6 +428,27 @@
               this.newPost.image = null;
               this.newPost.preview = null;
             },
+            openCommentEditor: function (post, comment) {
+              comment.editing = true;
+            },
+            closeCommentEditor: function (comment) {
+              comment.editing = false;
+              comment.editedContent = comment.content
+            },
+            updateComment: async function (comment) {
+              try {
+                let response = await axios.put(`/api/comments/${comment._id}`, {
+                  content: comment.editedContent
+                })
+                comment.content = comment.editedContent;
+
+                this.closeCommentEditor(comment)
+
+              } catch (error) {
+                console.error(error)
+              }
+
+            }
           },
         })
       </script>
