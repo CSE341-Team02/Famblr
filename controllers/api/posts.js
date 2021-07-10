@@ -1,4 +1,4 @@
-const {validationResult} = require('express-validator/check');
+const { validationResult } = require('express-validator/check');
 const io = require("../../utils/socket");
 
 const Post = require("../../models/post");
@@ -49,34 +49,43 @@ exports.getPostById = (req, res, next) => {
 };
 
 // Create Post
-exports.createPost = (req, res, next) => {
-  const contentText = req.body.contentText;
+exports.createPost = async (req, res, next) => {
+  const text = req.body.text;
   const errors = validationResult(req);
 
+  console.log(errors)
+
   if (!errors.isEmpty()) {
-    let error =  new Error("Post cannot be empty and must be less than 100 characters!");
+    let error = new Error("Post cannot be empty and must be less than 100 characters!");
     return next(error);
   }
-  
+
   const post = new Post({
-    text: contentText,
+    text: text,
     userId: req.user
   });
 
-  post
-  .save()
-  .then((result) => {
+  // Save image if one uploaded
+  if (req.file) {
+    const image = new Image({ ...req.file });
+    await image.save();
+    post.image = image._id;
+  }
 
-    io.getIO().emit("new-post", post);
-    console.log(` * (Socket) : "new-post" { postId: ${post._id} }`)
-    
-    return res.json(result);
-  })
-  .catch((err) => {
-    const error = new Error(err);
-    error.httpStatusCode = 500;
-    return next(error);
-  });
+  post
+    .save()
+    .then((result) => {
+
+      io.getIO().emit("new-post", post);
+      console.log(` * (Socket) : "new-post" { postId: ${post._id} }`)
+
+      return res.json(result);
+    })
+    .catch((err) => {
+      const error = new Error(err);
+      error.httpStatusCode = 500;
+      return next(error);
+    });
 };
 
 // Edit Post
@@ -87,7 +96,7 @@ exports.editPost = async (req, res, next) => {
     const errors = validationResult(req);
 
     if (!errors.isEmpty()) {
-      let error =  new Error("Post cannot be empty and must be less than 100 characters!");
+      let error = new Error("Post cannot be empty and must be less than 100 characters!");
       return next(error);
     }
 

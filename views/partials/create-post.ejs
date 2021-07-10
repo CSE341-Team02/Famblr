@@ -8,7 +8,7 @@
         <div class="iq-card-body">
             <!-- <form action="#"> -->
             <div class="d-flex align-items-center">
-                <div class="user-img">
+                <div class="user-img align-self-start">
                     <img v-bind:src="user && user.profilePicture ? '/uploads/' + user.profilePicture : '/images/profile.png'"
                         alt="userimg" class="avatar-60 rounded-circle">
                 </div>
@@ -17,13 +17,29 @@
                         placeholder="Write something here..." rows="2"
                         style="border:none; line-height: 1.25; min-height: 3em;" name="contentText" id="contentText"
                         required></textarea>
+
+                    <template v-if="newPost.preview">
+                        <hr>
+
+                        <div>
+                            <img :src="newPost.preview" class="img-fluid" />
+                            <button @click="removeImage" class="btn btn-danger btn-block"
+                                style="border-top-left-radius: 0; border-top-right-radius: 0;">
+                                <i class="ri-delete-bin-fill"></i>
+                            </button>
+                        </div>
+
+                    </template>
                 </div>
             </div>
             <hr>
             <ul class="post-opt-block d-flex align-items-center list-inline justify-content-between m-0 p-0">
-                <a href="#">
+                <a href="javascript:$('#imageInput').click()">
                     <li class="iq-bg-primary rounded p-2 pointer mr-3">
                         <img src="images/small/07.png" alt="icon" class="img-fluid">&nbsp;Add Photo
+
+                        <input id="imageInput" type="file" accept="image/*" @change="previewImage"
+                            style="display: none;">
                     </li>
                 </a>
                 <li>

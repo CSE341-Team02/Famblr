@@ -14,8 +14,9 @@ router.get("/:postId", postsController.getPostById);
 // Create Post
 router.post(
     '/',
+    multer().single('image'),
     [
-        body('contentText')
+        body('text')
             .isLength({ min: 1, max: 100 })
     ],
     postsController.createPost

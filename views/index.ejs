@@ -165,7 +165,8 @@
             postToDelete: null,
             newPost: {
               text: "",
-              image: null
+              image: null,
+              preview: null,
             },
             errorMessage: null
           },
@@ -183,7 +184,7 @@
             socket.on('new-comment', (comment) => {
               let post = vueApp.posts.find(post => post._id == comment.relatedPost)
 
-              if(post){
+              if (post) {
                 post.comments.push(comment)
               }
             });
@@ -227,9 +228,16 @@
                 this.errorMessage = null;
 
                 // Save new post to DB
-                let response = await axios.post(`/api/posts`, {
-                  contentText: this.newPost.text
-                });
+                let formData = new FormData();
+                formData.append('text', this.newPost.text);
+                formData.append('image', this.newPost.image);
+                let response = await axios.post(`/api/posts`,
+                  formData,
+                  {
+                    headers: {
+                      'Content-Type': 'multipart/form-data'
+                    }
+                  })
 
                 let postData = response.data;
 
@@ -240,7 +248,7 @@
 
                 // Reset New Post Input
                 this.newPost.text = "";
-                this.newPost.image = null;
+                this.removeImage();
 
               } catch (error) {
                 console.error(error);
@@ -313,7 +321,24 @@
             },
             formatDate(date) {
               return new Date(date).toLocaleString()
-            }
+            },
+            previewImage: function (event) {
+              let input = event.target;
+              if (input.files) {
+                let reader = new FileReader();
+                reader.onload = (e) => {
+                  this.newPost.preview = e.target.result;
+                }
+                this.newPost.image = input.files[0];
+                reader.readAsDataURL(input.files[0]);
+              }
+            },
+            removeImage: function () {
+              let input = document.getElementById("imageInput")
+              input.value = null;
+              this.newPost.image = null;
+              this.newPost.preview = null;
+            },
           },
         })
       </script>
