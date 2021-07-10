@@ -172,7 +172,7 @@
           created: function () {
             // Initialize Socket Listeners
             socket.on('new-post', (postData) => {
-              console.log(`New Post: `, postData)
+              // console.log(`New Post: `, postData)
 
               // add post from socket IF not already in list
               if (!this.posts.some(post => post._id === postData._id)) {
@@ -181,7 +181,7 @@
             });
 
             socket.on('new-comment', (commentData) => {
-              console.log(`New Comment: `, commentData)
+              // console.log(`New Comment: `, commentData)
             });
 
           },
@@ -227,7 +227,7 @@
                 let response = await axios.post(`/api/posts`, {
                   contentText: this.newPost.text
                 });
-                console.log("Post created successfully")
+                // console.log("Post created successfully")
 
                 // Add new post to list of posts
                 this.posts = [{ ...response.data }, ...this.posts]
@@ -246,8 +246,8 @@
                 relatedPost: postId,
                 content: document.getElementById(postId).value
               }).then(response => {
-                console.log("Comment Created Successfully!")
-                console.log(response)
+                // console.log("Comment Created Successfully!")
+                // console.log(response)
                 document.getElementById(postId).value = null;
               })
             },
@@ -283,7 +283,7 @@
                 onePost.comments = [...onePost.comments, ...commentsList];
               }
 
-              console.log(self.posts);
+              // console.log(self.posts);
 
 
 
@@ -292,10 +292,10 @@
             },
             deletePost: async function () {
               try {
-                console.log("Deleting: ", this.postToDelete)
+                // console.log("Deleting: ", this.postToDelete)
 
                 let response = await axios.delete(`/api/posts/${this.postToDelete}`)
-                console.log("Post Deleted from DB")
+                // console.log("Post Deleted from DB")
 
                 this.posts = this.posts.filter(post => {
                   return post._id != this.postToDelete

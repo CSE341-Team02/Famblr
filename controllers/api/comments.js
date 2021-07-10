@@ -14,19 +14,18 @@ exports.createComment = async (req, res, next) => {
     userId: req.user,
   });
 
-  // comment.relatedPost.getCommentsForPost(comment._id); //
   try {
-    const result = await comment.save();
-    res.json(result); // Send a response so the frontend know the request finished
-    const theComment = await Comment.findById(comment._id).populate("userId", "firstName lastName profilePicture").exec();    
+    await comment.save();
+    
     io.getIO().emit("new-comment", theComment);
+    console.log(` * (Socket) : "new-comment" { commentId: ${comment._id} }`)
+    
+    return res.json(comment);
   } catch (err) {
     const error = new Error(err);
     error.httpStatusCode = 500;
     return next(error);
   }
-
-
 };
 
 
@@ -38,7 +37,7 @@ exports.getCommentsForPost = async (req, res, next) => {
   const commentsList = await Comment.find({relatedPost: relatedPost})
     .populate("userId", "firstName lastName")
     .exec();
-  console.log(commentsList, "the comments list");
+  // console.log(commentsList, "the comments list");
   return res.json([...commentsList]);
 };
 

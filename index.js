@@ -55,7 +55,6 @@ app.use((req, res, next) => {
   res.locals.isAuthenticated = req.session.isLoggedIn;
   res.locals.user = req.session.user;
   res.locals.currentPath = req.url;
-  console.log(req.url);
   // res.locals.csrfToken = req.csrfToken();
   next();
 });
@@ -77,6 +76,11 @@ app.use((req, res, next) => {
       next(new Error(err));
     });
 });
+
+app.use((req, res, next) => {
+  console.info(` * ${req.method} ${req.originalUrl}`)
+  next()
+})
 
 //Route middlewares
 app.use("/", routes);
@@ -104,12 +108,12 @@ mongoose
     io.on('connection', (socket) => {
 
       // On Socket Connection
-      console.log(` * Socket Connected: ${socket.id}`)
+      console.log(` * (Socket): "connection" { socketID: ${socket.id} }`)
 
     });
 
   })
   .catch((err) => {
-    console.log(err);
+    console.error(err);
   });
 

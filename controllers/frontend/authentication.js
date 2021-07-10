@@ -35,7 +35,7 @@ exports.postLogin = (req, res, next) => {
 
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    console.log(errors.array()[0].msg);
+    console.error(errors.array()[0].msg);
     return res.status(422).render("auth/login", {
       path: "/login",
       pageTitle: "Login",
@@ -48,8 +48,8 @@ exports.postLogin = (req, res, next) => {
   }
 
   User.findOne({ email: email }).then((user) => {
-    console.log(user, "finding the user");
-    console.log(user.password);
+    // console.log(user, "finding the user");
+    // console.log(user.password);
     if (!user) {
       return res.status(422).render("auth/login", {
         path: "/login",
@@ -67,13 +67,13 @@ exports.postLogin = (req, res, next) => {
       .compare(password, user.password)
       .then((doMatch) => {
         if (doMatch) {
-          console.log("they do match");
+          // console.log("they do match");
 
           req.session.isLoggedIn = true;
           req.session.user = user;
           return req.session.save((error) => {
-            console.log(req.session, "the session information");
-            console.log(error, "error session");
+            // console.log(req.session, "the session information");
+            // console.log(error, "error session");
             res.redirect("/");
             // res.render("main/feed", {
             // path: "/feed",
@@ -86,7 +86,7 @@ exports.postLogin = (req, res, next) => {
             // }); //Change this to the user's index page
           });
         } else {
-          console.log("they do not match");
+          // console.log("they do not match");
           return res.status(422).render("auth/login", {
             path: "/login",
             pageTitle: "Login",
@@ -100,7 +100,7 @@ exports.postLogin = (req, res, next) => {
         }
       })
       .catch((error) => {
-        console.log(error);
+        console.error(error);
         res.redirect("/login");
       });
   });
@@ -111,7 +111,7 @@ exports.postLogin = (req, res, next) => {
 // Logout the user
 exports.logout = (req, res, next) => {
   req.session.destroy((err) => {
-    console.log(err);
+    console.error(err);
     res.redirect("/login");
   });
 };
@@ -155,7 +155,7 @@ exports.postSignUp = (req, res, next) => {
 
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    console.log(errors.array(), "erorr array");
+    console.error(errors.array(), "erorr array");
     return res.status(422).render("auth/signup", {
       path: "/signup",
       pageTitle: "Signup",
@@ -185,11 +185,11 @@ exports.postSignUp = (req, res, next) => {
 
       await user.save();
 
-      console.log("The user was successfully registered");
+      // console.log("The user was successfully registered");
 
       res.redirect("/");
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   })();
 };

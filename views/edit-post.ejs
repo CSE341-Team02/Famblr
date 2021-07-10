@@ -133,7 +133,7 @@
                             }
                         },
                         loadPost: async function () {
-                            console.log("Loading Post...")
+                            // console.log("Loading Post...")
                             try {
                                 let response = await axios.get(`/api/posts/${this.postId}`);
                                 this.post = response.data;
@@ -148,7 +148,7 @@
                             }
                         },
                         savePost: async function () {
-                            console.log("Saving Post...")
+                            // console.log("Saving Post...")
                             try {
                                 this.errorMessage = null;
                                 let formData = new FormData();
@@ -166,7 +166,7 @@
 
                                 this.post = response.data.post;
 
-                                console.log("Post Successfully Updated")
+                                // console.log("Post Successfully Updated")
 
                             } catch (error) {
                                 console.error(error.response.data.error);
@@ -186,7 +186,7 @@
                             }
                         },
                         removeImage: function () {
-                            console.log("removeImage...")
+                            // console.log("removeImage...")
                             let input = document.getElementById("imageInput")
                             input.value = null;
                             this.updateForm.preview = null;
@@ -194,7 +194,7 @@
                             this.updateForm.deleteImage = true;
                         },
                         resetForm: function () {
-                            console.log("Resetting Form...")
+                            // console.log("Resetting Form...")
                             this.errorMessage = null;
 
                             this.updateForm.text = this.post.text;

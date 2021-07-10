@@ -14,7 +14,7 @@ exports.getAllPosts = async (req, res, next) => {
   }
 
   const totalItems = await Post.countDocuments();
-  console.log(totalItems);
+  // console.log(totalItems);
 
 
   Post.find()
@@ -30,7 +30,7 @@ exports.getAllPosts = async (req, res, next) => {
       });
     })
     .catch(error => {
-      console.log(error);
+      console.error(error);
       return next(error);
     });
 };
@@ -43,7 +43,7 @@ exports.getPostById = (req, res, next) => {
       res.json(post);
     })
     .catch(error => {
-      console.log(error);
+      console.error(error);
       return next(error);
     });
 };
@@ -66,12 +66,13 @@ exports.createPost = (req, res, next) => {
   post
   .save()
   .then((result) => {
-    console.log("Created Post");
+    // console.log("Created Post");
     res.json(result); // Send a response so the frontend know the request finished
     return result;
   })
   .then(() => {
     io.getIO().emit("new-post", post);
+    console.log(` * (Socket) : "new-post" { postId: ${post._id} }`)
   })
   .catch((err) => {
     const error = new Error(err);
@@ -87,7 +88,7 @@ exports.editPost = async (req, res, next) => {
     let newText = req.body.text;
     const errors = validationResult(req);
 
-    console.log(errors);
+    console.error(errors);
 
     if (!errors.isEmpty()) {
       let error =  new Error("Post cannot be empty and must be less than 100 characters!");
@@ -139,10 +140,10 @@ exports.editPost = async (req, res, next) => {
 
 // Delete Post
 exports.deletePost = async (req, res, next) => {
-  console.log("deletePost");
+  // console.log("deletePost");
   try {
     let postId = req.params.postId;
-    console.log("rrrrrrriiiiiiiiiiiigggggggghhhhhhhhhhhhhtttttttttttttt   hhhhhhhhhheeeeeeeeerrrrrrrrrrrreeeeeeeeee")
+    // console.log("rrrrrrriiiiiiiiiiiigggggggghhhhhhhhhhhhhtttttttttttttt   hhhhhhhhhheeeeeeeeerrrrrrrrrrrreeeeeeeeee")
 
     // Find post by the postId in the url
     let post = await Post.findById(postId);
