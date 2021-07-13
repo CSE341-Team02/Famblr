@@ -1,7 +1,7 @@
 const User = require("../../models/user");
 
 exports.getAccountPage = (req, res, next) => {
-  res.render("account");
+  return res.render("account");
 };
 
 exports.getProfilePage = async (req, res, next) => {
@@ -16,9 +16,13 @@ exports.getProfilePage = async (req, res, next) => {
     }
 
     return res.render("profile");
-    
+
   } catch (error) {
     console.error(error);
     return next(error);
   }
 };
+
+exports.getFamilyPage = (req, res, next) => {
+  return res.render("family")
+}

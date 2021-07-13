@@ -17,6 +17,9 @@ router.use("/account", requiresLogin, require("./account"));
 // User Profile Pages
 router.use("/profile", requiresLogin, require("./profile"));
 
+// Family Members Pages
+router.use("/family", requiresLogin, require("./family"));
+
 // Post Pages
 router.use("/posts", requiresLogin, require("./posts"));
 

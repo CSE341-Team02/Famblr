@@ -7,6 +7,7 @@ const requiresJWT = require("../../middlewares/requiresJWT")
 // Controller
 const usersController = require("../../controllers/api/users");
 
+
 // Get Current User
 router.get("/current", requiresJWT, usersController.getCurrentUser);
 
@@ -18,5 +19,9 @@ router.get("/:userId", usersController.getUserById)
 
 // Update User
 router.put("/:userId", multer().single('image'), usersController.editUserById)
+
+// Get All Users
+router.get("/", requiresJWT, usersController.getAllUsers);
+
 
 module.exports = router;

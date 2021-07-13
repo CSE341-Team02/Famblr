@@ -1,5 +1,6 @@
 const User = require("../../models/user");
 const Image = require("../../models/image");
+const Post = require("../../models/post");
 
 // Get Current User
 exports.getCurrentUser = async (req, res, next) => {
@@ -49,6 +50,30 @@ exports.getUserByUsername = async (req, res, next) => {
         }
 
         return res.json({ user })
+
+    } catch (error) {
+        console.error(error)
+        return next(error)
+    }
+}
+
+// Get All Users
+exports.getAllUsers = async (req, res, next) => {
+    try {
+        let users = (await User
+            .find({}, '-password')
+            .sort({ lastName: "asc", firstName: "asc" })
+            .skip(parseInt(req.query.offset))
+            .limit(parseInt(req.query.limit)))
+            .map((user) => { return { ...user._doc } })
+
+        for (let i = 0; i < users.length; i++) {
+            users[i].postCount = await Post.countDocuments({ userId: users[i]._id })
+        }
+
+        const totalUsers = await User.countDocuments();
+
+        return res.json({ totalUsers, users })
 
     } catch (error) {
         console.error(error)

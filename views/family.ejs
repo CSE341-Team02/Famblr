@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+  <%- include ('partials/head.ejs') %>
+</head>
+
+<body>
+  <div id="vue-app">
+    <%- include ('partials/sidebar.ejs') %>
+      <%- include ('partials/top-navbar.ejs') %>
+        <%- include ('partials/right-sidebar.ejs') %>
+
+          <div id="content-page" class="content-page">
+            <div id="app" class="container">
+
+              <div class="row">
+                <div class="col-sm-12">
+                  <div class="iq-card">
+                    <div class="iq-card-header d-flex justify-content-between">
+                      <div class="iq-header-title">
+                        <h4 class="card-title">Family Members</h4>
+                      </div>
+                    </div>
+                    <div class="iq-card-body">
+                      <ul class="request-list list-inline m-0 p-0">
+                        <li v-for="(u) in users" class="d-flex align-items-center">
+                          <div class="user-img img-fluid">
+                            <a v-bind:href="'/profile/' + u.username">
+                              <img v-bind:src="u.profilePicture" alt="story-img" class="rounded-circle avatar-40">
+                            </a>
+                          </div>
+                          <div class="media-support-info ml-3">
+                            <h6>
+                              <a v-bind:href="'/profile/' + u.username">{{u.firstName}} {{u.lastName}}</a>
+                            </h6>
+                            <p class="mb-0">{{u.postCount}} Posts</p>
+                          </div>
+                          <div class="d-flex align-items-center">
+                            <a v-bind:href="'/profile/' + u.username" class="mr-3 btn btn-primary rounded">Profile</a>
+                          </div>
+                        </li>
+                        <li class="d-block text-center">
+                          <a v-if="moreUsersToLoad" @click="loadUsers()" class="mr-3 btn rounded">View More Users</a>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+  </div>
+
+  <%- include ('partials/footer.ejs') %>
+    <%- include ('partials/js-imports.ejs') %>
+
+      <script>
+        const vueApp = new Vue({
+          el: "#vue-app",
+          data: {
+            user: null,
+            limit: 5,
+            offset: 0,
+            users: [],
+            totalUsers: 0,
+            errorMessage: null,
+          },
+
+          mounted: async function () {
+            axios.defaults.headers.common[
+              "Authorization"
+            ] = `Bearer ${localStorage.famblrToken}`;
+
+            await this.getCurrentUser();
+
+            await this.loadUsers();
+          },
+          computed: {
+            profileUsername: function () {
+              return window.location.pathname.split("/")[2];
+            },
+            profileFullName: function () {
+              if (this.profileUser) return `${this.profileUser.firstName} ${this.profileUser.lastName}`
+              else return ''
+            },
+            moreUsersToLoad: function () {
+              return this.users.length !== this.totalUsers;
+            },
+          },
+          methods: {
+            getCurrentUser: async function () {
+              try {
+                let response = await axios.get(`/api/users/current`);
+                this.user = response.data.user;
+              } catch (error) {
+                console.error(error);
+                window.location.href = "/logout";
+              }
+            },
+            loadUsers: async function () {
+              if (this.offset > this.totalUsers) {
+                this.totalUsers = this.users.length;
+                return;
+              }
+              try {
+                this.loading = true;
+                let response = await axios.get(
+                  `/api/users?limit=${this.limit}&offset=${this.offset}`
+                );
+
+                let loadedUsers = response.data.users;
+
+                loadedUsers.forEach(user => {
+                  if (user.profilePicture) user.profilePicture = `/uploads/${user.profilePicture}`
+                  else user.profilePicture = '/images/profile.png';
+                });
+
+                this.users = [...this.users, ...loadedUsers];
+                this.totalUsers = response.data.totalUsers;
+
+                this.offset += this.limit;
+              } catch (error) {
+                console.error(error);
+              } finally {
+                this.loading = false;
+              }
+            }
+          }
+        });
+      </script>
+</body>
+
+</html>
