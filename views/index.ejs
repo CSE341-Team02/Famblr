@@ -49,7 +49,8 @@
 
                               <!-- Post Name and Date -->
                               <div class="media-support-info mt-2">
-                                <h5 class="mb-0 d-inline-block"><a href="#" class="">
+                                <h5 class="mb-0 d-inline-block"><a v-bind:href="'/profile/' + post.userId.username"
+                                    class="">
                                     {{post.userId.firstName}} {{post.userId.lastName}}</a></h5>
                                 <p class="mb-0 text-primary">{{ formatDate(post.date)}}</p>
                               </div>
@@ -315,7 +316,7 @@
               }
             },
             createComment: async function (postId) {
-              try{
+              try {
                 this.errorMessage = null;
 
                 return await axios.post('/api/comments', {
@@ -326,7 +327,7 @@
                   // console.log(response)
                   document.getElementById(postId).value = null;
                 })
-              }catch (error){
+              } catch (error) {
                 console.error(error);
                 this.errorMessage = error.response.data.error;
               }

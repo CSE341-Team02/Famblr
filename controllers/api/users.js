@@ -36,6 +36,26 @@ exports.getUserById = async (req, res, next) => {
     }
 };
 
+// Get User By Username
+exports.getUserByUsername = async (req, res, next) => {
+    try {
+        let username = req.params.username;
+        let user = await User.findOne({ username: username }, "-password");
+
+        if (!user) {
+            let error = new Error("User Not Found");
+            error.httpStatusCode = 404;
+            throw error;
+        }
+
+        return res.json({ user })
+
+    } catch (error) {
+        console.error(error)
+        return next(error)
+    }
+}
+
 // Edit User
 exports.editUserById = async (req, res, next) => {
     try {

@@ -8,6 +8,9 @@ const postsController = require("../../controllers/api/posts");
 // Get All Posts
 router.get("/", postsController.getAllPosts);
 
+// Get All Posts
+router.get("/username/:username", postsController.getPostsByUsername);
+
 // Get Single Post
 router.get("/:postId", postsController.getPostById);
 

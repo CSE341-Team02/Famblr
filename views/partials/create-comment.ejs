@@ -9,7 +9,11 @@
             </div>
 
             <div class="comment-data-block ml-3 flex-grow-1">
-                <h6>{{comment.userId.firstName}} {{comment.userId.lastName}}</h6>
+                <h6>
+                    <a v-bind:href="'/profile/' + comment.userId.username">
+                        {{comment.userId.firstName}} {{comment.userId.lastName}}
+                    </a>
+                </h6>
                 <p v-if="!comment.editing" class="mb-0">{{comment.content}}</p>
 
                 <div v-else class="comment-text d-flex align-items-center" style="position: relative;">

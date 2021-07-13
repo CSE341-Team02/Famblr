@@ -10,6 +10,9 @@ const usersController = require("../../controllers/api/users");
 // Get Current User
 router.get("/current", requiresJWT, usersController.getCurrentUser);
 
+// Get User By Username
+router.get("/username/:username", usersController.getUserByUsername)
+
 // Get User By Id
 router.get("/:userId", usersController.getUserById)
 

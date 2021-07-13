@@ -1,7 +1,7 @@
 const router = require("express").Router();
 const userController = require("../../controllers/frontend/user");
 
-// GET Account Details Page
-router.get("/", userController.getAccountPage);
+// GET User Profile Page
+router.get("/:username", userController.getProfilePage);
 
 module.exports = router;

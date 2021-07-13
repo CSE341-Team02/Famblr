@@ -3,19 +3,11 @@ const io = require("../../utils/socket");
 
 const Post = require("../../models/post");
 const Image = require("../../models/image");
+const User = require("../../models/user");
 
 // Get All Posts
 exports.getAllPosts = async (req, res, next) => {
-  if (req.query.limit) {
-
-  }
-  if (req.query.offset) {
-
-  }
-
   const totalItems = await Post.countDocuments();
-  // console.log(totalItems);
-
 
   Post.find()
     .sort({ date: "desc" })
@@ -39,6 +31,7 @@ exports.getPostById = (req, res, next) => {
   const postId = req.params.postId;
 
   Post.findById(postId)
+    .populate("userId", ["username", "firstName", "lastName", "profilePicture"])
     .then(post => {
       res.json(post);
     })
@@ -47,6 +40,29 @@ exports.getPostById = (req, res, next) => {
       return next(error);
     });
 };
+
+// Get All posts by a user
+exports.getPostsByUsername = async (req, res, next) => {
+  try {
+    const username = req.params.username;
+
+    const user = await User.findOne({ username: username })
+
+    const posts = await Post.find({ userId: user._id })
+      .sort({ date: "desc" })
+      .skip(parseInt(req.query.offset))
+      .limit(parseInt(req.query.limit))
+      .populate("userId", ["username", "firstName", "lastName", "profilePicture"])
+
+    const totalItems = await Post.countDocuments({ userId: user._id });
+
+    return res.json({ totalItems, posts })
+
+  } catch (error) {
+    console.error(error);
+    return next(error);
+  }
+}
 
 // Create Post
 exports.createPost = async (req, res, next) => {
