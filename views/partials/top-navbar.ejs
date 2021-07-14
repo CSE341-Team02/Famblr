@@ -26,8 +26,8 @@
                 class="img-fluid rounded-circle mr-3" alt="user">
               <div class="caption">
                 <h6 class="mb-0 line-height">
-                  <%= user.firstName %>
-                    <%= user.lastName %>
+                  {{ user ? user.firstName : '' }}
+                  {{ user ? user.lastName : '' }}
                 </h6>
               </div>
             </a>
@@ -42,8 +42,8 @@
               <div class="iq-card shadow-none m-0">
                 <div class="iq-card-body p-0 ">
                   <div class="bg-primary p-3 line-height">
-                    <h5 class="mb-0 text-white line-height">Hello <%= user.firstName %>
-                        <%= user.lastName %>
+                    <h5 class="mb-0 text-white line-height">Hello {{ user ? user.firstName : '' }}
+                      {{ user ? user.lastName : '' }}
                     </h5>
                   </div>
                   <a v-bind:href="user ? '/profile/' + user.username : '#'" class="iq-sub-card iq-bg-primary-hover">
