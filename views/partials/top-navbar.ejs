@@ -20,7 +20,7 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav ml-auto navbar-list">
           <li>
-            <a v-bind:href="'/profile/' + user.username" class="d-flex align-items-center">
+            <a v-bind:href="user ? '/profile/' + user.username : '#'" class="d-flex align-items-center">
               <img id="top-nav-profile-pic"
                 v-bind:src="user && user.profilePicture ? `/uploads/${user.profilePicture}` : '/images/profile.png'"
                 class="img-fluid rounded-circle mr-3" alt="user">
@@ -46,7 +46,7 @@
                         <%= user.lastName %>
                     </h5>
                   </div>
-                  <a v-bind:href="'/profile/' + user.username" class="iq-sub-card iq-bg-primary-hover">
+                  <a v-bind:href="user ? '/profile/' + user.username : '#'" class="iq-sub-card iq-bg-primary-hover">
                     <div class="media align-items-center">
                       <div class="rounded iq-card-icon iq-bg-primary">
                         <i class="ri-file-user-line"></i>

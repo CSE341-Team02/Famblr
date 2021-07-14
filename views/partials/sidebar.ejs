@@ -10,7 +10,7 @@
         </li>
 
         <li class="<% if(currentPath === " /account") { %>active<%} %>">
-            <a v-bind:href="'/profile/' + user.username" class=" ">
+            <a v-bind:href="user ? '/profile/' + user.username : '#'" class=" ">
               <i class="las la-user"></i><span>Profile</span>
             </a>
         </li>
